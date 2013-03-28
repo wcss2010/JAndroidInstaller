@@ -4,14 +4,12 @@
  */
 package JAndroidInstaller.UIComponent;
 
-import WSwingUILib.Frame.JTemplateFrame;
+import WSwingUILib.Frame.*;
 import WSwingUILib.Component.Base.*;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.net.URL;
-import javax.swing.ImageIcon;
+import WSwingUILib.Component.*;
+import java.awt.*;
+import java.net.*;
+import javax.swing.*;
 
 /**
  * 新的UI启动类
@@ -26,6 +24,11 @@ public class JAPKInstallerUI extends JTemplateFrame
         this.setStatusText("设备状态：未连接！");
         this.setVersionText("版本：V1.5");
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
+        
+        this.setActiveTabButton(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JMiddleContentPanel());
+        this.setActiveTabButton(1, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());
+        this.setActiveTabButton(2, "文件管理", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/manager.png"), new JMiddleContentPanel());
+        this.setActiveTabButton(3, "快捷工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JMiddleContentPanel());
     }
     
     /**
