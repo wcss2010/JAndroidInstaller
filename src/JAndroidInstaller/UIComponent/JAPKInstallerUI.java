@@ -15,7 +15,7 @@ import javax.swing.*;
  * 新的UI启动类
  * @author wcss
  */
-public class JAPKInstallerUI extends JTemplateFrame
+public class JAPKInstallerUI extends JTemplateFrame implements Runnable
 {
     public JAPKInstallerUI()
     {
@@ -67,5 +67,10 @@ public class JAPKInstallerUI extends JTemplateFrame
                 new JAPKInstallerUI().setVisible(true);
             }
         });
+    }
+
+    @Override
+    public void run()
+    {        
     }
 }
