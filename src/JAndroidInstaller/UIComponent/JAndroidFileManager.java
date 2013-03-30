@@ -8,13 +8,17 @@ import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
 import WSwingUILib.Component.Base.JImagePanel;
 import WSwingUILib.Component.JMiddleContentPanel;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  * 文件管理
@@ -25,6 +29,8 @@ public class JAndroidFileManager extends JMiddleContentPanel {
 
     private DefaultTreeModel firstModel = null;
     private DefaultMutableTreeNode rootNode = null;
+    private JCategoryNodeRenderer treeRenderer = new JCategoryNodeRenderer();
+    private JAndroidFilesModel emptyList = null;
 
     /**
      * Creates new form JAndroidFileManager
@@ -32,25 +38,21 @@ public class JAndroidFileManager extends JMiddleContentPanel {
     public JAndroidFileManager() {
         initComponents();
         plReadme.setReadmeInfo("文件管理器");
-        //this.btnReturn.buttonText = "返回上层";
-        this.btnDelete.buttonText = "删除 ";
+        this.btnDeleteDir.buttonText = "删除目录";
+        this.btnDeleteFile.buttonText = "删除文件";
         this.btnLoadFiles.buttonText = "导入文件";
         this.btnExportFiles.buttonText = "导出文件";
         this.btnCreateFiles.buttonText = "创建目录";
         this.tleFiles.setBackground(Color.white);
         this.trDirs.setBackground(Color.white);
         this.tleFiles.getTableHeader().setBackground(Color.white);
-
-        listFiles("/sdcard");
-
-        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
-        renderer.setLeafIcon(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/dir.png"));
-        renderer.setClosedIcon(new ImageIcon("/JAndroidInstaller/UIImage/dir.png"));
-        renderer.setOpenIcon(new ImageIcon("/JAndroidInstaller/UIImage/dir.png"));
-        this.trDirs.setCellRenderer(renderer);
-        rootNode = new DefaultMutableTreeNode("Android设备",true);        
+        //listFiles("/sdcard");
+        emptyList = new JAndroidFilesModel(new ArrayList<String>());
+        this.trDirs.setCellRenderer(treeRenderer);
+        trDirs.updateUI();
+        rootNode = new DefaultMutableTreeNode("Android设备", true);
         firstModel = new DefaultTreeModel(rootNode);
-        this.trDirs.setModel(firstModel);        
+        this.trDirs.setModel(firstModel);
     }
 
     /**
@@ -65,7 +67,7 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             }
 
             txtPath.setText(sourceDir);
-
+            this.tleFiles.setModel(emptyList);
             ArrayList<String> list = USBDeviceWorker.shellCmdWithResult("ls " + sourceDir);
             if (list.size() > 0) {
                 if (list.get(0).contains("No such file or directory") || list.get(0).contains("Not a")) {
@@ -86,12 +88,10 @@ public class JAndroidFileManager extends JMiddleContentPanel {
      * @param parent
      * @param sourceDir
      */
-    public void listDirs(DefaultMutableTreeNode parent, String sourceDir)
-    {
-        try
-        {
+    public void listDirs(DefaultMutableTreeNode parent, String sourceDir) {
+        try {
             //this.trDirs.setModel(null);
-            
+
             if (!sourceDir.endsWith("/")) {
                 sourceDir += "/";
             }
@@ -100,36 +100,38 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             if (list.size() > 0) {
                 if (list.get(0).contains("No such file or directory") || list.get(0).contains("Not a")) {
                     throw new Exception("Error Path!");
-                } else
-                {
+                } else {
                     parent.removeAllChildren();
+                    firstModel.reload();
+
                     ArrayList<String> lists = USBDeviceWorker.shellCmdWithResult("ls -l " + sourceDir);
-                    if (lists.size() > 0)
-                    {
-                        for(String str : lists)
-                        {
+                    if (lists.size() > 0) {
+                        for (String str : lists) {
                             String[] teams = str.split(" ");
-                            if (str.startsWith("d") || str.startsWith("l"))
-                            {
-                                if (str.startsWith("d"))
-                                {
-                                    DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("",true);
-                                    child1.setUserObject(new JTreeNodeShow(teams[teams.length - 1],sourceDir + teams[teams.length - 1]));
+                            if (str.startsWith("d") || str.startsWith("l")) {
+                                if (str.startsWith("d")) {
+                                    DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("", true);
+                                    child1.setUserObject(new JTreeNodeShow(teams[teams.length - 1], sourceDir + teams[teams.length - 1]));
                                     parent.add(child1);
-                                }else
-                                {
-                                    DefaultMutableTreeNode child2 = new DefaultMutableTreeNode("",true);
-                                    child2.setUserObject(new JTreeNodeShow(teams[teams.length - 3],sourceDir + teams[teams.length - 3]));
+                                } else {
+                                    DefaultMutableTreeNode child2 = new DefaultMutableTreeNode("", true);
+                                    child2.setUserObject(new JTreeNodeShow(teams[teams.length - 3], sourceDir + teams[teams.length - 3]));
                                     parent.add(child2);
                                 }
                             }
                         }
-                    }                    
+                    }
                 }
             }
-            
+
             //this.trDirs.setModel(firstModel);
-            firstModel.reload();
+            firstModel.reload(parent);
+            //--------下面代码实现显示新节点（自动展开父节点）-------  
+            TreeNode[] nodes = firstModel.getPathToRoot(parent);
+            TreePath path = new TreePath(nodes);
+            trDirs.makeVisible(path);
+            trDirs.scrollPathToVisible(path);
+            trDirs.updateUI();
             listFiles(sourceDir);
         } catch (Exception ex) {
             Logger.getLogger(JAndroidFileManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,9 +141,8 @@ public class JAndroidFileManager extends JMiddleContentPanel {
     /**
      * 载入配置
      */
-    public void load()
-    {
-        listDirs(rootNode,"/");        
+    public void load() {
+        listDirs(rootNode, "/");
     }
 
     /**
@@ -156,15 +157,19 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         plReadme = new JAndroidInstaller.UIComponent.JReadmePanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         trDirs = new javax.swing.JTree();
-        btnDelete = new WSwingUILib.Component.JUIButton();
+        btnDeleteFile = new WSwingUILib.Component.JUIButton();
         btnLoadFiles = new WSwingUILib.Component.JUIButton();
         btnExportFiles = new WSwingUILib.Component.JUIButton();
         btnCreateFiles = new WSwingUILib.Component.JUIButton();
         txtPath = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         tleFiles = new javax.swing.JTable();
+        btnDeleteDir = new WSwingUILib.Component.JUIButton();
 
         trDirs.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
+        trDirs.setAutoscrolls(true);
+        trDirs.setDoubleBuffered(true);
+        trDirs.setShowsRootHandles(true);
         trDirs.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 trDirsMouseClicked(evt);
@@ -172,14 +177,14 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         });
         jScrollPane1.setViewportView(trDirs);
 
-        javax.swing.GroupLayout btnDeleteLayout = new javax.swing.GroupLayout(btnDelete);
-        btnDelete.setLayout(btnDeleteLayout);
-        btnDeleteLayout.setHorizontalGroup(
-            btnDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout btnDeleteFileLayout = new javax.swing.GroupLayout(btnDeleteFile);
+        btnDeleteFile.setLayout(btnDeleteFileLayout);
+        btnDeleteFileLayout.setHorizontalGroup(
+            btnDeleteFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 70, Short.MAX_VALUE)
         );
-        btnDeleteLayout.setVerticalGroup(
-            btnDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        btnDeleteFileLayout.setVerticalGroup(
+            btnDeleteFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
@@ -262,6 +267,17 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         });
         jScrollPane3.setViewportView(tleFiles);
 
+        javax.swing.GroupLayout btnDeleteDirLayout = new javax.swing.GroupLayout(btnDeleteDir);
+        btnDeleteDir.setLayout(btnDeleteDirLayout);
+        btnDeleteDirLayout.setHorizontalGroup(
+            btnDeleteDirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
+        );
+        btnDeleteDirLayout.setVerticalGroup(
+            btnDeleteDirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 36, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -277,7 +293,9 @@ public class JAndroidFileManager extends JMiddleContentPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(txtPath)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDeleteDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeleteFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLoadFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -291,17 +309,18 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDeleteFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLoadFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExportFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCreateFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPath))
+                    .addComponent(txtPath)
+                    .addComponent(btnDeleteDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(plReadme, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(plReadme, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -312,10 +331,18 @@ public class JAndroidFileManager extends JMiddleContentPanel {
 
     private void trDirsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_trDirsMouseClicked
         // TODO add your handling code here:
+        if (trDirs.getLastSelectedPathComponent() != null) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) trDirs.getLastSelectedPathComponent();
+            try {
+                listDirs(selectedNode, ((JTreeNodeShow) selectedNode.getUserObject()).tag);
+            } catch (Exception ex) {
+            }
+        }
     }//GEN-LAST:event_trDirsMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private WSwingUILib.Component.JUIButton btnCreateFiles;
-    private WSwingUILib.Component.JUIButton btnDelete;
+    private WSwingUILib.Component.JUIButton btnDeleteDir;
+    private WSwingUILib.Component.JUIButton btnDeleteFile;
     private WSwingUILib.Component.JUIButton btnExportFiles;
     private WSwingUILib.Component.JUIButton btnLoadFiles;
     private javax.swing.JScrollPane jScrollPane1;
