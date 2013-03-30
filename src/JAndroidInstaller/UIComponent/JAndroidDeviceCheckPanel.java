@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package JAndroidInstaller.InstallerUI;
+package JAndroidInstaller.UIComponent;
 
 import JAndroidInstaller.AndroidDevice.USBDeviceChecker;
 import JAndroidInstaller.AndroidDevice.USBDeviceInstaller;
+import WSwingUILib.Component.Base.JImagePanel;
+import WSwingUILib.Component.JMiddleContentPanel;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,19 +17,17 @@ import java.util.logging.Logger;
  *
  * @author wcss
  */
-public class JAPKInstallerDriverUI extends javax.swing.JFrame {
+public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
 
     private int currentStepIndex = 0;
     private ArrayList<String> firstChecks = null;
     private ArrayList<String> secondChecks = null;
 
     /**
-     * Creates new form JAPKInstallerDriverUI
+     * Creates new form JAndroidDeviceCheckPanel
      */
-    public JAPKInstallerDriverUI() {
+    public JAndroidDeviceCheckPanel(JAPKInstallerUI aThis) {
         initComponents();
-        this.setTitle("ADB驱动配置");
-        this.setLocationRelativeTo(null);
         currentStepIndex = 1;
         this.lblStep1Flag.setText("<---");
         this.lblStep2Flag.setText("");
@@ -64,29 +63,25 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblStep2 = new javax.swing.JLabel();
-        lblStep3 = new javax.swing.JLabel();
-        lblStep1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new JImagePanel("/JAndroidInstaller/UIImage/readme-back.png");
+        jPanel1 = new JImagePanel("/JAndroidInstaller/UIImage/readme-back.png");
         jLabel1 = new javax.swing.JLabel();
         lblProductID = new javax.swing.JLabel();
         lblProductName = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         btnNext = new javax.swing.JButton();
-        btnExit = new javax.swing.JButton();
-        lblStep1Flag = new javax.swing.JLabel();
-        lblStep2Flag = new javax.swing.JLabel();
-        lblStep3Flag = new javax.swing.JLabel();
+        lblStep1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lblStep1Flag = new javax.swing.JLabel();
+        lblStep3 = new javax.swing.JLabel();
+        lblStep2Flag = new javax.swing.JLabel();
+        btnExit = new javax.swing.JButton();
+        lblStep3Flag = new javax.swing.JLabel();
+        lblStep2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblStep2.setText("第二步，插上手机数据线并点击下一步按钮。");
-
-        lblStep3.setText("第三步，手机型号检查完成。");
-
-        lblStep1.setText("第一步，拔掉手机数据线并点击下一步按钮。");
-
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Android设备信息"));
 
         jLabel1.setText("厂商ID：");
@@ -106,7 +101,7 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -133,6 +128,16 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
             }
         });
 
+        lblStep1.setText("第一步，拔掉手机数据线并点击下一步按钮。");
+
+        jLabel2.setText("<html>注：本程序在进行文件管理时，需要Android端有busybox的支持！<br>\n如果你在设备上使用过网页式的android管理软件，那么它可能会占用adb通道，这样的情况下，请关闭\"USB调试\"功能后重新打开!\n</html>");
+
+        lblStep1Flag.setText("jLabel1");
+
+        lblStep3.setText("第三步，手机型号检查完成。");
+
+        lblStep2Flag.setText("jLabel2");
+
         btnExit.setText("退出");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,83 +145,86 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
             }
         });
 
-        lblStep1Flag.setText("jLabel1");
-
-        lblStep2Flag.setText("jLabel2");
-
         lblStep3Flag.setText("jLabel3");
 
-        jLabel2.setText("<html>注：本程序在进行文件管理时，需要Android端有busybox的支持！<br>\n如果你在设备上使用过网页式的android管理软件，那么它可能会占用adb通道，这样的情况下，请关闭\"USB调试\"功能后重新打开!\n</html>");
+        lblStep2.setText("第二步，插上手机数据线并点击下一步按钮。");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(79, 79, 79)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblStep3, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblStep3Flag))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblStep2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblStep2Flag))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblStep1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblStep1Flag))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(100, 100, 100)
-                                .addComponent(btnNext)
-                                .addGap(100, 100, 100)
-                                .addComponent(btnExit)))
-                        .addGap(0, 16, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnNext)
+                .addGap(176, 176, 176)
+                .addComponent(btnExit)
+                .addGap(137, 137, 137))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(74, 74, 74)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblStep3, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblStep3Flag))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblStep2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblStep2Flag))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblStep1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblStep1Flag)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStep1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStep1Flag))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStep2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStep2Flag))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblStep3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblStep3Flag))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNext)
-                    .addComponent(btnExit))
-                .addContainerGap())
+                    .addComponent(btnExit)))
         );
 
-        pack();
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(80, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         // TODO add your handling code here:
@@ -224,13 +232,13 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
             try {
                 firstChecks = USBDeviceChecker.getDeviceData();
             } catch (Exception ex) {
-                Logger.getLogger(JAPKInstallerDriverUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JAndroidDeviceCheckPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (currentStepIndex == 2) {
             try {
                 secondChecks = USBDeviceChecker.getDeviceData();
             } catch (Exception ex) {
-                Logger.getLogger(JAPKInstallerDriverUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(JAndroidDeviceCheckPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             if (secondChecks != null && firstChecks != null) {
@@ -257,24 +265,21 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
                     String[] teams = secondChecks.get(0).split(":");
                     try {
                         Boolean result = USBDeviceInstaller.installUsbDevice(teams[0].trim());
-                        if (result)
-                        {
+                        if (result) {
                             javax.swing.JOptionPane.showMessageDialog(null, "Adb驱动配置完成！");
-                        }else
-                        {
-                           USBDeviceInstaller.restartAdbServer();
-                           javax.swing.JOptionPane.showMessageDialog(null, "Adb服务重启完成！");
+                        } else {
+                            USBDeviceInstaller.restartAdbServer();
+                            javax.swing.JOptionPane.showMessageDialog(null, "Adb服务重启完成！");
                         }
                     } catch (Exception ex) {
-                        Logger.getLogger(JAPKInstallerDriverUI.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(JAndroidDeviceCheckPanel.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(null, "检测失败！请关闭程序后重新开始！");
                 }
             }
         } else {
-            JAPKInstallerMainUI.startMainUI(JAPKInstallerMainUI.currentArgs);
-            this.dispose();
+            JAPKInstallerUI.startMainUI(JAPKInstallerUI.currentArgs);
         }
 
         currentStepIndex++;
@@ -285,6 +290,11 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
             this.btnNext.setText("安装");
         }
     }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnNext;
@@ -292,6 +302,7 @@ public class JAPKInstallerDriverUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblProductID;
     private javax.swing.JLabel lblProductName;
     private javax.swing.JLabel lblStep1;

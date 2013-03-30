@@ -789,7 +789,8 @@ public class JAPKInstallerMainUI extends javax.swing.JFrame implements Runnable 
                 if (onlyNeedRestartAdbServer()) {
                     checkDeviceStatus(args);
                 } else {
-                    java.awt.EventQueue.invokeLater(new Runnable() {
+                    java.awt.EventQueue.invokeLater(new Runnable()
+                    {
                         public void run() {
                             new JAPKInstallerDriverUI().setVisible(true);
                         }
