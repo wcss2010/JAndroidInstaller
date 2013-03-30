@@ -19,7 +19,11 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="btnUploadImage" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="btnUploadImage" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cbScreenSize" max="32767" attributes="0"/>
+                  </Group>
                   <Component id="image" alignment="0" max="32767" attributes="0"/>
                   <Component id="lblDeviceNe" alignment="0" min="-2" pref="226" max="-2" attributes="0"/>
               </Group>
@@ -48,7 +52,10 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblDeviceNe" min="-2" pref="29" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnUploadImage" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnUploadImage" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbScreenSize" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="lblDeviceName" min="-2" pref="23" max="-2" attributes="0"/>
@@ -188,6 +195,24 @@
           <Font name="&#x6587;&#x6cc9;&#x9a7f;&#x5fae;&#x7c73;&#x9ed1;" size="18" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&#x5236;&#x4f5c;&#x65e5;&#x671f;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="cbScreenSize">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="&#x6587;&#x6cc9;&#x9a7f;&#x5fae;&#x7c73;&#x9ed1;" size="14" style="1"/>
+        </Property>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="7">
+            <StringItem index="0" value="240*320"/>
+            <StringItem index="1" value="240*400"/>
+            <StringItem index="2" value="320*480"/>
+            <StringItem index="3" value="480*640"/>
+            <StringItem index="4" value="480*800"/>
+            <StringItem index="5" value="768*1024"/>
+            <StringItem index="6" value="800*1280"/>
+          </StringArray>
+        </Property>
       </Properties>
     </Component>
   </SubComponents>
