@@ -310,6 +310,16 @@ public class USBDeviceInfo
          return getAndroidSystemInfo("ro.sf.lcd_density=");
      }
      
+     /**
+      * 版本增量
+      * @return
+      * @throws Exception 
+      */
+     public static String getAndroidRomVersionInfo() throws Exception
+     {
+         return getAndroidSystemInfo("ro.build.version.incremental=");
+     }
+     
      public static void main(String[] args)
      {
         try {
