@@ -51,6 +51,8 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
         if (taskNum == 0) {
             this.showContentPanel(new JAndroidDeviceCheckPanel(this));
+        } else if (taskNum == 1) {
+            this.showContentPanel(new JAndroidDeviceRestartPanel(this));
         }
     }
 
@@ -123,21 +125,26 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
      * @param args
      */
     private static void checkDeviceStatus(String args[]) {
-        try {
-            USBDeviceInstaller.restartAdbServer();
-            if (USBDeviceWorker.isAndroidDeviceOnline()) {
-                startMainUI(args);
-            } else {
-                int option = javax.swing.JOptionPane.showConfirmDialog(null, "对不起，没有检查到你的设备！你可以按如下方法进行尝试：先将'USB调试'功能关闭后再打开,然后重新插拔USB数据线，最后按'是'按钮继续，或按'否'退出！", "设备异常！", javax.swing.JOptionPane.YES_NO_OPTION);
-                if (option == javax.swing.JOptionPane.YES_OPTION) {
-                    checkDeviceStatus(args);
-                } else {
-                    System.exit(0);
-                }
+//        try {
+//            USBDeviceInstaller.restartAdbServer();
+//            if (USBDeviceWorker.isAndroidDeviceOnline()) {
+//                startMainUI(args);
+//            } else {
+//                int option = javax.swing.JOptionPane.showConfirmDialog(null, "对不起，没有检查到你的设备！你可以按如下方法进行尝试：先将'USB调试'功能关闭后再打开,然后重新插拔USB数据线，最后按'是'按钮继续，或按'否'退出！", "设备异常！", javax.swing.JOptionPane.YES_NO_OPTION);
+//                if (option == javax.swing.JOptionPane.YES_OPTION) {
+//                    checkDeviceStatus(args);
+//                } else {
+//                    System.exit(0);
+//                }
+//            }
+//        } catch (Exception ex) {
+//            Logger.getLogger(JAPKInstallerUI.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new JAPKInstallerUI(1).setVisible(true);
             }
-        } catch (Exception ex) {
-            Logger.getLogger(JAPKInstallerUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        });
     }
 
     /**
@@ -196,17 +203,13 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
     }
 
     @Override
-    public void run()
-    {
-        
+    public void run() {
     }
 
-    private void showAPKInfo(File file)
-    {
-        
+    private void showAPKInfo(File file) {
     }
 
-    private void showAllTabs() {
+    public void showAllTabs() {
         this.setActiveTabButton(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceInfoPanel());
         this.setActiveTabButton(1, "一键安装", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/installer.png"), new JAndroidAPKInstaller());
         //this.setActiveTabButton(2, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());

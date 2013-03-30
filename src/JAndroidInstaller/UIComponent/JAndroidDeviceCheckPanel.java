@@ -130,7 +130,7 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
 
         lblStep1.setText("第一步，拔掉手机数据线并点击下一步按钮。");
 
-        jLabel2.setText("<html>注：本程序在进行文件管理时，需要Android端有busybox的支持！<br>\n如果你在设备上使用过网页式的android管理软件，那么它可能会占用adb通道，这样的情况下，请关闭\"USB调试\"功能后重新打开!\n</html>");
+        jLabel2.setText("<html>注：本程序在进行文件管理时，需要Android端有busybox的支持！<br> 如果您在设备上使用过网页式的android管理软件，那么它可能会占用adb通道，这样的情况下，请关闭\"USB调试\"功能后重新打开! </html>");
 
         lblStep1Flag.setText("jLabel1");
 
@@ -203,13 +203,10 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
                 .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46))
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
