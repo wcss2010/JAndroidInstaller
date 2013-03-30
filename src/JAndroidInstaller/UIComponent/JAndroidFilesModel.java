@@ -19,17 +19,27 @@ public class JAndroidFilesModel extends AbstractTableModel {
     private ArrayList<JAndroidFileEntry> source = new ArrayList<JAndroidFileEntry>();
     private String[] fieldNames = new String[]{"文件名称", "文件大小(字节)", "创建日期", "所有者", "文件属性"};
 
-    public JAndroidFilesModel(ArrayList<String> data) {
-        for (String str : data) {
-            if (str.startsWith("-")) {
-                JAndroidFileEntry fee = new JAndroidFileEntry();
-                String[] team = str.split(" ");
-                fee.property = team[0];
-                fee.own = team[1];
-                fee.name = team[team.length - 1];
-                fee.date = team[team.length - 3] + " " + team[team.length - 2];
-                fee.size = team[team.length - 4];
-                source.add(fee);
+    public JAndroidFilesModel(String sourceDir) throws Exception {
+        if (sourceDir != null && !sourceDir.isEmpty()) {
+            ArrayList<String> nameList = USBDeviceWorker.shellCmdWithResult("ls " + sourceDir);
+            ArrayList<String> allList = USBDeviceWorker.shellCmdWithResult("ls -l " + sourceDir);
+            for (String sour : nameList) {
+                for (String file : allList) {
+                    if (file.endsWith(sour)) {
+                        if (file.startsWith("-")) {
+                            JAndroidFileEntry fee = new JAndroidFileEntry();
+                            int indexx = file.indexOf(sour);
+                            file = file.substring(0, indexx);
+                            String[] team = file.split(" ");
+                            fee.property = team[0];
+                            fee.own = team[1];
+                            fee.name = sour;
+                            fee.date = team[team.length - 2] + " " + team[team.length - 1];
+                            fee.size = team[team.length - 3];
+                            source.add(fee);
+                        }
+                    }
+                }
             }
         }
     }
@@ -82,7 +92,7 @@ public class JAndroidFilesModel extends AbstractTableModel {
 
     public static void main(String[] args) {
         try {
-            new JAndroidFilesModel(USBDeviceWorker.shellCmdWithResult("ls -l"));
+            //new JAndroidFilesModel(USBDeviceWorker.shellCmdWithResult("ls -l"));
         } catch (Exception ex) {
             Logger.getLogger(JAndroidFilesModel.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -31,6 +31,8 @@ public class JAndroidFileManager extends JMiddleContentPanel {
     private DefaultMutableTreeNode rootNode = null;
     private JCategoryNodeRenderer treeRenderer = new JCategoryNodeRenderer();
     private JAndroidFilesModel emptyList = null;
+    private DefaultMutableTreeNode lastListNode = null;
+    private String lastListSourceDir = null;
 
     /**
      * Creates new form JAndroidFileManager
@@ -42,12 +44,16 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         this.btnDeleteFile.buttonText = "删除文件";
         this.btnLoadFiles.buttonText = "导入文件";
         this.btnExportFiles.buttonText = "导出文件";
-        this.btnCreateFiles.buttonText = "创建目录";
+        this.btnCreateDirs.buttonText = "创建目录";
         this.tleFiles.setBackground(Color.white);
         this.trDirs.setBackground(Color.white);
         this.tleFiles.getTableHeader().setBackground(Color.white);
-        //listFiles("/sdcard");
-        emptyList = new JAndroidFilesModel(new ArrayList<String>());
+        try {
+            //listFiles("/sdcard");
+            emptyList = new JAndroidFilesModel("");
+        } catch (Exception ex) {
+            Logger.getLogger(JAndroidFileManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.trDirs.setCellRenderer(treeRenderer);
         trDirs.updateUI();
         rootNode = new DefaultMutableTreeNode("Android设备", true);
@@ -73,7 +79,7 @@ public class JAndroidFileManager extends JMiddleContentPanel {
                 if (list.get(0).contains("No such file or directory") || list.get(0).contains("Not a")) {
                     throw new Exception("Error Path!");
                 } else {
-                    this.tleFiles.setModel(new JAndroidFilesModel(USBDeviceWorker.shellCmdWithResult("ls -l " + sourceDir)));
+                    this.tleFiles.setModel(new JAndroidFilesModel(sourceDir));
                 }
             }
             //this.trDirs.setModel(null);
@@ -95,6 +101,9 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             if (!sourceDir.endsWith("/")) {
                 sourceDir += "/";
             }
+
+            lastListNode = parent;
+            lastListSourceDir = sourceDir;
 
             ArrayList<String> list = USBDeviceWorker.shellCmdWithResult("ls " + sourceDir);
             if (list.size() > 0) {
@@ -139,6 +148,15 @@ public class JAndroidFileManager extends JMiddleContentPanel {
     }
 
     /**
+     * 刷新列表
+     */
+    public void uploadList() {
+        if (lastListNode != null && lastListSourceDir != null) {
+            listDirs(lastListNode, lastListSourceDir);
+        }
+    }
+
+    /**
      * 载入配置
      */
     public void load() {
@@ -160,7 +178,7 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         btnDeleteFile = new WSwingUILib.Component.JUIButton();
         btnLoadFiles = new WSwingUILib.Component.JUIButton();
         btnExportFiles = new WSwingUILib.Component.JUIButton();
-        btnCreateFiles = new WSwingUILib.Component.JUIButton();
+        btnCreateDirs = new WSwingUILib.Component.JUIButton();
         txtPath = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         tleFiles = new javax.swing.JTable();
@@ -169,13 +187,22 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         trDirs.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
         trDirs.setAutoscrolls(true);
         trDirs.setDoubleBuffered(true);
+        trDirs.setExpandsSelectedPaths(false);
+        trDirs.setScrollsOnExpand(false);
         trDirs.setShowsRootHandles(true);
+        trDirs.setVisibleRowCount(1000);
         trDirs.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 trDirsMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(trDirs);
+
+        btnDeleteFile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteFileMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout btnDeleteFileLayout = new javax.swing.GroupLayout(btnDeleteFile);
         btnDeleteFile.setLayout(btnDeleteFileLayout);
@@ -196,7 +223,7 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         );
         btnLoadFilesLayout.setVerticalGroup(
             btnLoadFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 36, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout btnExportFilesLayout = new javax.swing.GroupLayout(btnExportFiles);
@@ -210,20 +237,20 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             .addGap(0, 36, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout btnCreateFilesLayout = new javax.swing.GroupLayout(btnCreateFiles);
-        btnCreateFiles.setLayout(btnCreateFilesLayout);
-        btnCreateFilesLayout.setHorizontalGroup(
-            btnCreateFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout btnCreateDirsLayout = new javax.swing.GroupLayout(btnCreateDirs);
+        btnCreateDirs.setLayout(btnCreateDirsLayout);
+        btnCreateDirsLayout.setHorizontalGroup(
+            btnCreateDirsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 70, Short.MAX_VALUE)
         );
-        btnCreateFilesLayout.setVerticalGroup(
-            btnCreateFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        btnCreateDirsLayout.setVerticalGroup(
+            btnCreateDirsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 36, Short.MAX_VALUE)
         );
 
         txtPath.setEditable(false);
         txtPath.setBackground(new java.awt.Color(255, 255, 255));
-        txtPath.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
+        txtPath.setFont(new java.awt.Font("文泉驿微米黑", 0, 18)); // NOI18N
         txtPath.setText("/");
         txtPath.setDisabledTextColor(new java.awt.Color(255, 255, 255));
 
@@ -267,6 +294,12 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         });
         jScrollPane3.setViewportView(tleFiles);
 
+        btnDeleteDir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteDirMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout btnDeleteDirLayout = new javax.swing.GroupLayout(btnDeleteDir);
         btnDeleteDir.setLayout(btnDeleteDirLayout);
         btnDeleteDirLayout.setHorizontalGroup(
@@ -285,45 +318,98 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(txtPath)
                     .addComponent(plReadme, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(txtPath)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnDeleteDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(76, 76, 76)
+                                .addComponent(btnCreateDirs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeleteDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeleteFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLoadFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExportFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCreateFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnDeleteFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLoadFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnExportFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnDeleteFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLoadFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExportFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCreateFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPath)
-                    .addComponent(btnDeleteDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
+                .addComponent(txtPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnDeleteDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCreateDirs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnDeleteFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLoadFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExportFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(plReadme, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * 获取当前选择目录
+     *
+     * @return
+     */
+    private DefaultMutableTreeNode getSelectedDirNode() throws Exception {
+        if (trDirs.getLastSelectedPathComponent() != null) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) trDirs.getLastSelectedPathComponent();
+            if (selectedNode != null) {
+                return selectedNode;
+            } else {
+                throw new Exception("no select dir!");
+            }
+        } else {
+            throw new Exception("no select dir!");
+        }
+    }
+
+    /**
+     * 获取当前选择目录
+     *
+     * @return
+     */
+    private String getSelectedDir() throws Exception {
+        if (trDirs.getLastSelectedPathComponent() != null) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) trDirs.getLastSelectedPathComponent();
+            if (selectedNode != null) {
+                return ((JTreeNodeShow) selectedNode.getUserObject()).tag;
+            } else {
+                throw new Exception("no select dir!");
+            }
+        } else {
+            throw new Exception("no select dir!");
+        }
+    }
+
+    /**
+     * 获取当前选择文件
+     *
+     * @return
+     */
+    private String getSelectedFile() throws Exception {
+        String dirStr = txtPath.getText();
+        String names = tleFiles.getModel().getValueAt(tleFiles.getSelectedRow(), 0) + "";
+        return dirStr + names;
+    }
 
     private void tleFilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tleFilesMouseClicked
         // TODO add your handling code here:
@@ -334,20 +420,58 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         if (trDirs.getLastSelectedPathComponent() != null) {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) trDirs.getLastSelectedPathComponent();
             try {
-                listDirs(selectedNode, ((JTreeNodeShow) selectedNode.getUserObject()).tag);
+                if (selectedNode.getChildCount() <= 0)
+                {
+                    listDirs(selectedNode, ((JTreeNodeShow) selectedNode.getUserObject()).tag);
+                }else
+                {
+                    listFiles(((JTreeNodeShow) selectedNode.getUserObject()).tag);
+                }
             } catch (Exception ex) {
             }
         }
     }//GEN-LAST:event_trDirsMouseClicked
+
+    private void btnDeleteFileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteFileMouseClicked
+        // TODO add your handling code here:
+        int option = javax.swing.JOptionPane.showConfirmDialog(null, "真的要删除此文件吗？", "提示", javax.swing.JOptionPane.YES_NO_OPTION);
+        if (option == javax.swing.JOptionPane.YES_OPTION) {
+            try {
+                String file = getSelectedFile();
+                USBDeviceWorker.deleteFileAndDir(file);
+                this.uploadList();
+            } catch (Exception ex) {
+                Logger.getLogger(JAndroidFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                javax.swing.JOptionPane.showMessageDialog(null, "删除失败！");
+            }
+        }
+    }//GEN-LAST:event_btnDeleteFileMouseClicked
+
+    private void btnDeleteDirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteDirMouseClicked
+        // TODO add your handling code here:
+        int option = javax.swing.JOptionPane.showConfirmDialog(null, "真的要删除此目录吗？", "提示", javax.swing.JOptionPane.YES_NO_OPTION);
+        if (option == javax.swing.JOptionPane.YES_OPTION) {
+            try {
+                String dir = getSelectedDir();
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) getSelectedDirNode().getParent();
+                this.lastListNode = node;
+                this.lastListSourceDir = ((JTreeNodeShow) node.getUserObject()).tag;
+                USBDeviceWorker.deleteFileAndDir(dir);
+                this.uploadList();
+            } catch (Exception ex) {
+                Logger.getLogger(JAndroidFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                javax.swing.JOptionPane.showMessageDialog(null, "删除失败！");
+            }
+        }
+    }//GEN-LAST:event_btnDeleteDirMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private WSwingUILib.Component.JUIButton btnCreateFiles;
+    private WSwingUILib.Component.JUIButton btnCreateDirs;
     private WSwingUILib.Component.JUIButton btnDeleteDir;
     private WSwingUILib.Component.JUIButton btnDeleteFile;
     private WSwingUILib.Component.JUIButton btnExportFiles;
     private WSwingUILib.Component.JUIButton btnLoadFiles;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
-    private WSwingUILib.Component.JUIButton jUIButton1;
     private JAndroidInstaller.UIComponent.JReadmePanel plReadme;
     private javax.swing.JTable tleFiles;
     private javax.swing.JTree trDirs;
