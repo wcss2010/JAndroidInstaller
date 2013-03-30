@@ -226,8 +226,6 @@ public class JAndroidFileManager extends JMiddleContentPanel implements Runnable
         trDirs.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
         trDirs.setAutoscrolls(true);
         trDirs.setDoubleBuffered(true);
-        trDirs.setExpandsSelectedPaths(false);
-        trDirs.setScrollsOnExpand(false);
         trDirs.setShowsRootHandles(true);
         trDirs.setVisibleRowCount(1000);
         trDirs.addMouseListener(new java.awt.event.MouseAdapter() {

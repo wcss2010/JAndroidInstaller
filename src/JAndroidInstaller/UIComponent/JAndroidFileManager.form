@@ -96,8 +96,6 @@
             </Property>
             <Property name="autoscrolls" type="boolean" value="true"/>
             <Property name="doubleBuffered" type="boolean" value="true"/>
-            <Property name="expandsSelectedPaths" type="boolean" value="false"/>
-            <Property name="scrollsOnExpand" type="boolean" value="false"/>
             <Property name="showsRootHandles" type="boolean" value="true"/>
             <Property name="visibleRowCount" type="int" value="1000"/>
           </Properties>
