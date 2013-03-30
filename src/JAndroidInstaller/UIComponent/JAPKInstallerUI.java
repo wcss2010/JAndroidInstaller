@@ -26,16 +26,23 @@ import javax.swing.*;
  */
 public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
 
+    public static Boolean enabledSwitchDeviceStart = true;
+
     /**
      * 正常启动
      */
     public JAPKInstallerUI() {
         this.setSoftName("Android简易工具箱");
         this.setSoftInfo("Android Simple ToolBox");
-        this.setStatusText("设备状态：未连接！");
+        this.setStatusText("设备状态：已连接！");
         this.setVersionText("版本：V1.5");
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
         showAllTabs();
+
+        enabledSwitchDeviceStart = true;
+        Thread tt = new Thread(this);
+        tt.setDaemon(true);
+        tt.start();
     }
 
     /**
@@ -204,12 +211,40 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
 
     @Override
     public void run() {
+        while (true) {
+            try {
+                Thread.sleep(7000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JAPKInstallerUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (enabledSwitchDeviceStart) {
+                try {
+                    final JAPKInstallerUI mains = this;
+                    if (!USBDeviceWorker.isAndroidDeviceOnline()) {
+                        enabledSwitchDeviceStart = false;
+                        java.awt.EventQueue.invokeLater(new Runnable() {
+                            public void run() 
+                            {
+                                setStatusText("设备状态：未连接！");
+                                hideAllTabButton();
+                                showContentPanel(new JAndroidDeviceRestartPanel(mains));
+                            }
+                        });
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(JAPKInstallerUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     private void showAPKInfo(File file) {
     }
 
     public void showAllTabs() {
+        enabledSwitchDeviceStart = true;
+
         this.setActiveTabButton(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceInfoPanel());
         this.setActiveTabButton(1, "一键安装", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/installer.png"), new JAndroidAPKInstaller());
         //this.setActiveTabButton(2, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());
