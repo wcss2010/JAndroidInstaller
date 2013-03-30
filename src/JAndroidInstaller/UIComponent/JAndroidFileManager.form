@@ -126,6 +126,9 @@
       </Layout>
     </Container>
     <Container class="WSwingUILib.Component.JUIButton" name="btnLoadFiles">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnLoadFilesMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -141,6 +144,9 @@
       </Layout>
     </Container>
     <Container class="WSwingUILib.Component.JUIButton" name="btnExportFiles">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExportFilesMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -156,6 +162,9 @@
       </Layout>
     </Container>
     <Container class="WSwingUILib.Component.JUIButton" name="btnCreateDirs">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnCreateDirsMouseClicked"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">

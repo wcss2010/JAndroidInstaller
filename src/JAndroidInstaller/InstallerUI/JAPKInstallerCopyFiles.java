@@ -5,6 +5,7 @@
 package JAndroidInstaller.InstallerUI;
 
 import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
+import JAndroidInstaller.UIComponent.JAndroidFileManager;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,7 +74,8 @@ public class JAPKInstallerCopyFiles extends javax.swing.JFrame implements Runnab
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void run() {
+    public void run()
+    {
         if (fileList.length > 0) {
             int current = 0;
             progress.setMaximum(fileList.length);

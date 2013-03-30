@@ -5,14 +5,18 @@
 package JAndroidInstaller.UIComponent;
 
 import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
+import JAndroidInstaller.InstallerUI.JAPKInstallerCopyFiles;
+import JAndroidInstaller.InstallerUI.JAPKInstallerMainUI;
 import WSwingUILib.Component.Base.JImagePanel;
 import WSwingUILib.Component.JMiddleContentPanel;
 import java.awt.Color;
 import java.awt.Component;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -25,7 +29,7 @@ import javax.swing.tree.TreePath;
  *
  * @author wcss
  */
-public class JAndroidFileManager extends JMiddleContentPanel {
+public class JAndroidFileManager extends JMiddleContentPanel implements Runnable {
 
     private DefaultTreeModel firstModel = null;
     private DefaultMutableTreeNode rootNode = null;
@@ -33,6 +37,9 @@ public class JAndroidFileManager extends JMiddleContentPanel {
     private JAndroidFilesModel emptyList = null;
     private DefaultMutableTreeNode lastListNode = null;
     private String lastListSourceDir = null;
+    //copyfile
+    private File[] fileList = null;
+    private String destPath = "";
 
     /**
      * Creates new form JAndroidFileManager
@@ -148,11 +155,43 @@ public class JAndroidFileManager extends JMiddleContentPanel {
     }
 
     /**
-     * 刷新列表
+     * 刷新文件和目录列表
      */
-    public void uploadList() {
+    public void uploadFileAndDirList() {
         if (lastListNode != null && lastListSourceDir != null) {
             listDirs(lastListNode, lastListSourceDir);
+        }
+    }
+
+    /**
+     * 刷新文件列表
+     */
+    public void uploadFileList() {
+        listFiles(txtPath.getText());
+    }
+
+    public File[] showOpenDialogs() {
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle("选择要导入的文件！");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setMultiSelectionEnabled(true);
+        int option = jfc.showOpenDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            return jfc.getSelectedFiles();
+        } else {
+            return null;
+        }
+    }
+
+    public String showSaveDialogs() {
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle("选择要导出的文件保存位置！");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int option = jfc.showSaveDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            return jfc.getSelectedFile().getAbsolutePath();
+        } else {
+            return "";
         }
     }
 
@@ -215,6 +254,12 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        btnLoadFiles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoadFilesMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout btnLoadFilesLayout = new javax.swing.GroupLayout(btnLoadFiles);
         btnLoadFiles.setLayout(btnLoadFilesLayout);
         btnLoadFilesLayout.setHorizontalGroup(
@@ -226,6 +271,12 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        btnExportFiles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExportFilesMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout btnExportFilesLayout = new javax.swing.GroupLayout(btnExportFiles);
         btnExportFiles.setLayout(btnExportFilesLayout);
         btnExportFilesLayout.setHorizontalGroup(
@@ -236,6 +287,12 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             btnExportFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 36, Short.MAX_VALUE)
         );
+
+        btnCreateDirs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCreateDirsMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout btnCreateDirsLayout = new javax.swing.GroupLayout(btnCreateDirs);
         btnCreateDirs.setLayout(btnCreateDirsLayout);
@@ -420,11 +477,9 @@ public class JAndroidFileManager extends JMiddleContentPanel {
         if (trDirs.getLastSelectedPathComponent() != null) {
             DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) trDirs.getLastSelectedPathComponent();
             try {
-                if (selectedNode.getChildCount() <= 0)
-                {
+                if (selectedNode.getChildCount() <= 0) {
                     listDirs(selectedNode, ((JTreeNodeShow) selectedNode.getUserObject()).tag);
-                }else
-                {
+                } else {
                     listFiles(((JTreeNodeShow) selectedNode.getUserObject()).tag);
                 }
             } catch (Exception ex) {
@@ -439,7 +494,7 @@ public class JAndroidFileManager extends JMiddleContentPanel {
             try {
                 String file = getSelectedFile();
                 USBDeviceWorker.deleteFileAndDir(file);
-                this.uploadList();
+                this.uploadFileList();
             } catch (Exception ex) {
                 Logger.getLogger(JAndroidFileManager.class.getName()).log(Level.SEVERE, null, ex);
                 javax.swing.JOptionPane.showMessageDialog(null, "删除失败！");
@@ -457,13 +512,59 @@ public class JAndroidFileManager extends JMiddleContentPanel {
                 this.lastListNode = node;
                 this.lastListSourceDir = ((JTreeNodeShow) node.getUserObject()).tag;
                 USBDeviceWorker.deleteFileAndDir(dir);
-                this.uploadList();
+                this.uploadFileAndDirList();
             } catch (Exception ex) {
                 Logger.getLogger(JAndroidFileManager.class.getName()).log(Level.SEVERE, null, ex);
                 javax.swing.JOptionPane.showMessageDialog(null, "删除失败！");
             }
         }
     }//GEN-LAST:event_btnDeleteDirMouseClicked
+
+    private void btnCreateDirsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateDirsMouseClicked
+        // TODO add your handling code here:
+        String mkdirName = javax.swing.JOptionPane.showInputDialog(null, "请输入新的目录名！");
+        if (!mkdirName.trim().equals("")) {
+            String newMkdir = txtPath.getText() + mkdirName;
+            try {
+                USBDeviceWorker.shellCmdNoResult("mkdir " + newMkdir);
+            } catch (Exception ex) {
+                Logger.getLogger(JAPKInstallerMainUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.uploadFileAndDirList();
+        }
+    }//GEN-LAST:event_btnCreateDirsMouseClicked
+
+    private void btnExportFilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportFilesMouseClicked
+        try {
+            // TODO add your handling code here:
+            if (getSelectedFile() != null) {
+                String sourr = getSelectedFile();
+                String destt = showSaveDialogs();
+                if (!destt.equals("")) {
+                    try {
+                        USBDeviceWorker.copyFromSdcard(sourr, destt);
+                        javax.swing.JOptionPane.showMessageDialog(null, "完成!");
+                    } catch (Exception ex) {
+                        Logger.getLogger(JAPKInstallerMainUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(JAndroidFileManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExportFilesMouseClicked
+
+    private void btnLoadFilesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoadFilesMouseClicked
+        // TODO add your handling code here:
+        File[] destt = showOpenDialogs();
+        if (destt != null) {
+            fileList = destt;
+            destPath = txtPath.getText();
+            Thread tt = new Thread(this);
+            tt.setDaemon(true);
+            tt.start();
+        }
+    }//GEN-LAST:event_btnLoadFilesMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private WSwingUILib.Component.JUIButton btnCreateDirs;
     private WSwingUILib.Component.JUIButton btnDeleteDir;
@@ -477,4 +578,32 @@ public class JAndroidFileManager extends JMiddleContentPanel {
     private javax.swing.JTree trDirs;
     private javax.swing.JTextField txtPath;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() 
+    {
+       if (fileList.length > 0)
+       {
+            plReadme.setReadmeInfo("正在进行文件复制，请稍后......");
+            int current = 0;
+            plReadme.setReadmeInfo("共有"+ fileList.length +"个文件需要复制，正在复制第1个......");
+            current = 1;
+
+            for (File f : fileList) {
+                plReadme.setReadmeInfo("共有"+ fileList.length +"个文件需要复制，正在复制第" + current + "个......");
+                
+                try {
+                    USBDeviceWorker.copyToSdcard(f.getAbsolutePath(), this.destPath + "/" + f.getName());
+                } catch (Exception ex) {
+                    Logger.getLogger(JAPKInstallerCopyFiles.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                current++;
+            }
+            
+            plReadme.setReadmeInfo("文件复制完成!");
+        }
+
+        this.uploadFileList();
+    }
 }

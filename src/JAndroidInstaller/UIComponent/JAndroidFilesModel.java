@@ -27,16 +27,20 @@ public class JAndroidFilesModel extends AbstractTableModel {
                 for (String file : allList) {
                     if (file.endsWith(sour)) {
                         if (file.startsWith("-")) {
-                            JAndroidFileEntry fee = new JAndroidFileEntry();
-                            int indexx = file.indexOf(sour);
-                            file = file.substring(0, indexx);
-                            String[] team = file.split(" ");
-                            fee.property = team[0];
-                            fee.own = team[1];
-                            fee.name = sour;
-                            fee.date = team[team.length - 2] + " " + team[team.length - 1];
-                            fee.size = team[team.length - 3];
-                            source.add(fee);
+                            try {
+                                JAndroidFileEntry fee = new JAndroidFileEntry();
+                                int indexx = file.indexOf(sour);
+                                file = file.substring(0, indexx);
+                                String[] team = file.split(" ");
+                                fee.property = team[0];
+                                fee.own = team[1];
+                                fee.name = sour;
+                                fee.date = team[team.length - 2] + " " + team[team.length - 1];
+                                fee.size = team[team.length - 3];
+                                source.add(fee);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
                         }
                     }
                 }

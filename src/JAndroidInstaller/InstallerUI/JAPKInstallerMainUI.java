@@ -271,6 +271,11 @@ public class JAPKInstallerMainUI extends javax.swing.JFrame implements Runnable 
         });
 
         btnExport.setText("导出文件");
+        btnExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExportMouseClicked(evt);
+            }
+        });
         btnExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportActionPerformed(evt);
@@ -382,7 +387,7 @@ public class JAPKInstallerMainUI extends javax.swing.JFrame implements Runnable 
                 .addGap(8, 8, 8)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -664,6 +669,10 @@ public class JAPKInstallerMainUI extends javax.swing.JFrame implements Runnable 
             this.uploadFileLists();
         }
     }//GEN-LAST:event_btnMkdirActionPerformed
+
+    private void btnExportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportMouseClicked
 
     private static void bootMainUI() {
         /* Create and display the form */

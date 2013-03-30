@@ -51,7 +51,7 @@
               <EmptySpace min="8" pref="8" max="-2" attributes="0"/>
               <Component id="jTabbedPane1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel5" pref="32" max="32767" attributes="0"/>
+              <Component id="jLabel5" pref="35" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -391,6 +391,7 @@
                     <Property name="text" type="java.lang.String" value="&#x5bfc;&#x51fa;&#x6587;&#x4ef6;"/>
                   </Properties>
                   <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnExportMouseClicked"/>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExportActionPerformed"/>
                   </Events>
                 </Component>
