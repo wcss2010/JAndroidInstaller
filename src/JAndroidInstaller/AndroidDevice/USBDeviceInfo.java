@@ -154,6 +154,35 @@ public class USBDeviceInfo
      }
      
      /**
+      * 保存屏幕通用方法(如果screenshot命令不存在，则使用FrameBufer方式读取)
+      * @param localFile
+      * @param screenSize
+      * @return
+      * @throws Exception 
+      */
+     public static Boolean saveDeviceScreen(String localFile,String screenSize) throws Exception
+     {
+         ArrayList<String> screens = USBDeviceWorker.shellCmdWithResult("screenshot --help");
+         if (screens.size() > 0)
+         {
+             if (screens.get(0).endsWith("not found"))
+             {
+                 System.out.println("use framebuffer save screen!");
+                 saveDeviceScreenWithFrameBuffer(localFile,screenSize);
+                 return true;
+             }else
+             {
+                 System.out.println("use screenshots save screen!");
+                 saveDeviceScreenWithScreenShot(localFile);
+                 return true;
+             }
+         }else
+         {
+            throw new Exception("save screen error!");
+         }         
+     }
+     
+     /**
       * 获取android的build.prop内容
       * @return 
       */
@@ -307,9 +336,7 @@ public class USBDeviceInfo
             
             System.out.println("Battery Capacity:" + getCurrentBatteryCapacity() + "%");
             
-            saveDeviceScreenWithFrameBuffer("/home/wcss/temp.png","320*480");
-            
-            saveDeviceScreenWithScreenShot("/home/wcss/temp1.png");
+            saveDeviceScreen("/home/wcss/temp.png","320*480");
             
             System.out.println("Android " + getAndroidSystemVersion());
             
