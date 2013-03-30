@@ -25,10 +25,12 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable
         this.setVersionText("版本：V1.5");
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
         
-        this.setActiveTabButton(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JMiddleContentPanel());
+        this.setActiveTabButton(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceInfoPanel());
         this.setActiveTabButton(1, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());
         this.setActiveTabButton(2, "文件管理", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/manager.png"), new JMiddleContentPanel());
         this.setActiveTabButton(3, "快捷工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JMiddleContentPanel());
+    
+        this.selectTabPage(0);
     }
     
     /**
