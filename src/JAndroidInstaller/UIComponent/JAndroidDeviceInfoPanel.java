@@ -6,34 +6,45 @@ package JAndroidInstaller.UIComponent;
 
 import JAndroidInstaller.AndroidDevice.USBDeviceInfo;
 import WSwingUILib.Component.JMiddleContentPanel;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author wcss
  */
-public class JAndroidDeviceInfoPanel extends JMiddleContentPanel
-{
+public class JAndroidDeviceInfoPanel extends JMiddleContentPanel {
+
     /**
      * Creates new form JAndroidDeviceInfoPanel
      */
-    public JAndroidDeviceInfoPanel()
-    {
+    public JAndroidDeviceInfoPanel() {
         initComponents();
+        this.btnUploadImage.buttonText = "刷新";
     }
 
-    public void load()
-    {
-        try 
-        {
-            
+    public void load() {
+        try {
+            this.uploadAndroidScreen();
             this.lblDeviceNe.setText("型号：" + USBDeviceInfo.getAndroidProductModelName());
+            this.lblDeviceName.setText("型号：" + USBDeviceInfo.getAndroidProductModelName());
+            this.lblRomVersionInfo.setText("固件版本号：" + USBDeviceInfo.getAndroidRomVersionInfo());
+            this.lblAndroidVersion.setText("Android版本：" + USBDeviceInfo.getAndroidSystemVersion());
+            this.lblCpuName.setText("芯片版本号：" + USBDeviceInfo.getAndroidCpuVersionName());
+            this.lblPlatformName.setText("主板平台：" + USBDeviceInfo.getAndroidPlatformName());
+            this.lblRomVersion.setText("版本号：" + USBDeviceInfo.getAndroidRomVersion());
+            this.lblBuildDate.setText("制作日期：" + new Date(USBDeviceInfo.getAndroidSystemInfo("ro.build.date=")).toLocaleString());
+            this.lblKernelVersion.setText("<html>内核版本：" + USBDeviceInfo.getKernelVersion() + "</html>");
         } catch (Exception ex) {
             Logger.getLogger(JAndroidDeviceInfoPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,48 +54,157 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jImagePanel1 = new WSwingUILib.Component.Base.JImagePanel();
+        image = new WSwingUILib.Component.Base.JImagePanel();
         lblDeviceNe = new javax.swing.JLabel();
+        btnUploadImage = new WSwingUILib.Component.JUIButton();
+        lblDeviceName = new javax.swing.JLabel();
+        lblRomVersionInfo = new javax.swing.JLabel();
+        lblAndroidVersion = new javax.swing.JLabel();
+        lblCpuName = new javax.swing.JLabel();
+        lblPlatformName = new javax.swing.JLabel();
+        lblRomVersion = new javax.swing.JLabel();
+        lblKernelVersion = new javax.swing.JLabel();
+        lblBuildDate = new javax.swing.JLabel();
 
-        jImagePanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        image.setBackground(new java.awt.Color(0, 0, 0));
+        image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        javax.swing.GroupLayout jImagePanel1Layout = new javax.swing.GroupLayout(jImagePanel1);
-        jImagePanel1.setLayout(jImagePanel1Layout);
-        jImagePanel1Layout.setHorizontalGroup(
-            jImagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
+        javax.swing.GroupLayout imageLayout = new javax.swing.GroupLayout(image);
+        image.setLayout(imageLayout);
+        imageLayout.setHorizontalGroup(
+            imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        jImagePanel1Layout.setVerticalGroup(
-            jImagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 370, Short.MAX_VALUE)
+        imageLayout.setVerticalGroup(
+            imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 355, Short.MAX_VALUE)
         );
 
         lblDeviceNe.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
+        lblDeviceNe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblDeviceNe.setText("jLabel1");
+
+        btnUploadImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUploadImageMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnUploadImageLayout = new javax.swing.GroupLayout(btnUploadImage);
+        btnUploadImage.setLayout(btnUploadImageLayout);
+        btnUploadImageLayout.setHorizontalGroup(
+            btnUploadImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 64, Short.MAX_VALUE)
+        );
+        btnUploadImageLayout.setVerticalGroup(
+            btnUploadImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
+        );
+
+        lblDeviceName.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblDeviceName.setText("型号");
+
+        lblRomVersionInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblRomVersionInfo.setText("固件版本号");
+
+        lblAndroidVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblAndroidVersion.setText("Android版本");
+
+        lblCpuName.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblCpuName.setText("芯片");
+
+        lblPlatformName.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblPlatformName.setText("主板平台");
+
+        lblRomVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblRomVersion.setText("版本号");
+
+        lblKernelVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblKernelVersion.setText("内核版本：");
+
+        lblBuildDate.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblBuildDate.setText("制作日期");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(75, 75, 75)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jImagePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(383, Short.MAX_VALUE))
+                    .addComponent(lblRomVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDeviceName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAndroidVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCpuName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPlatformName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblBuildDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblKernelVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jImagePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblRomVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCpuName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPlatformName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBuildDate, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblKernelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnUploadImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUploadImageMouseClicked
+        // TODO add your handling code here:
+        uploadAndroidScreen();
+    }//GEN-LAST:event_btnUploadImageMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private WSwingUILib.Component.Base.JImagePanel jImagePanel1;
+    private WSwingUILib.Component.JUIButton btnUploadImage;
+    private WSwingUILib.Component.Base.JImagePanel image;
+    private javax.swing.JLabel lblAndroidVersion;
+    private javax.swing.JLabel lblBuildDate;
+    private javax.swing.JLabel lblCpuName;
+    private javax.swing.JLabel lblDeviceName;
     private javax.swing.JLabel lblDeviceNe;
+    private javax.swing.JLabel lblKernelVersion;
+    private javax.swing.JLabel lblPlatformName;
+    private javax.swing.JLabel lblRomVersion;
+    private javax.swing.JLabel lblRomVersionInfo;
     // End of variables declaration//GEN-END:variables
+
+    private void uploadAndroidScreen() {
+        try {
+            USBDeviceInfo.saveDeviceScreen(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/androidscreen.png", "480*800");
+            if (new File(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/androidscreen.png").exists()) {
+                image.setImageIcon(new ImageIcon(ImageIO.read(new FileInputStream(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/androidscreen.png"))), true);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(JAndroidDeviceInfoPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
