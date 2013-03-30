@@ -4,8 +4,10 @@
  */
 package JAndroidInstaller.AndroidDevice;
 
+import java.io.File;
+
 /**
- *
+ * APK包基础信息
  * @author wcss
  */
 public class APKBaseInfoEntry 
@@ -15,7 +17,15 @@ public class APKBaseInfoEntry
     private String packageVersionCode;
     private String packageCNName;
     private String packageSdkVersion;
+    private String localPath;
+    private String state;
 
+    public String toString()
+    {
+        String name = packageCNName != null?(packageCNName.trim().length() > 0?packageCNName:packageEngName):packageEngName;
+        return  "包名：" + name + "    大小：" + (new File(localPath).length() / 1024) + "K";
+    }
+    
     /**
      * @return the packageEngName
      */
@@ -84,5 +94,33 @@ public class APKBaseInfoEntry
      */
     public void setPackageSdkVersion(String packageSdkVersion) {
         this.packageSdkVersion = packageSdkVersion;
+    }
+
+    /**
+     * @return the localPath
+     */
+    public String getLocalPath() {
+        return localPath;
+    }
+
+    /**
+     * @param localPath the localPath to set
+     */
+    public void setLocalPath(String localPath) {
+        this.localPath = localPath;
+    }
+
+    /**
+     * @return the state
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(String state) {
+        this.state = state;
     }
 }

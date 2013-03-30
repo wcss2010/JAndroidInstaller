@@ -4,19 +4,58 @@
  */
 package JAndroidInstaller.UIComponent;
 
+import JAndroidInstaller.AndroidDevice.APKBaseInfoEntry;
+import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
 import WSwingUILib.Component.JMiddleContentPanel;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author wcss
  */
-public class JAndroidAPKInstaller extends JMiddleContentPanel
-{
+public class JAndroidAPKInstaller extends JMiddleContentPanel {
+
+    ArrayList<APKBaseInfoEntry> needInstallFiles = new ArrayList<APKBaseInfoEntry>();
+
     /**
      * Creates new form JAndroidAPKInstaller
      */
     public JAndroidAPKInstaller() {
         initComponents();
+        plReadme.setReadmeInfo("APK批量安装");
+        this.ubtnLoadFromDir.buttonText = "批量导入";
+        this.ubtnDelete.buttonText = "删除该记录";
+        this.ubtnInstallToPhone.buttonText = "安装所有到内存";
+        this.ubtnInstallToSdcard.buttonText = "安装所有到存储卡";
+        this.ubtnUninstall.buttonText = "卸载该应用";
+        this.ubtnClear.buttonText = "清空";
+        this.jlAPKList.setListData(needInstallFiles.toArray());
+    }
+
+    /**
+     * 选择安装包文件
+     *
+     * @return
+     */
+    public File[] showOpenDialogs() {
+        JFileChooser jfc = new JFileChooser();
+        jfc.setDialogTitle("选择要导入的APK文件！");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setMultiSelectionEnabled(true);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "APK安装包", "apk");
+        jfc.setFileFilter(filter);
+        int option = jfc.showOpenDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            return jfc.getSelectedFiles();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -28,17 +67,247 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        plReadme = new JAndroidInstaller.UIComponent.JReadmePanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jlAPKList = new javax.swing.JList();
+        ubtnLoadFromDir = new WSwingUILib.Component.JUIButton();
+        ubtnDelete = new WSwingUILib.Component.JUIButton();
+        ubtnInstallToSdcard = new WSwingUILib.Component.JUIButton();
+        ubtnInstallToPhone = new WSwingUILib.Component.JUIButton();
+        ubtnUninstall = new WSwingUILib.Component.JUIButton();
+        ubtnClear = new WSwingUILib.Component.JUIButton();
+
+        jlAPKList.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jlAPKList);
+
+        ubtnLoadFromDir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ubtnLoadFromDirMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ubtnLoadFromDirLayout = new javax.swing.GroupLayout(ubtnLoadFromDir);
+        ubtnLoadFromDir.setLayout(ubtnLoadFromDirLayout);
+        ubtnLoadFromDirLayout.setHorizontalGroup(
+            ubtnLoadFromDirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        ubtnLoadFromDirLayout.setVerticalGroup(
+            ubtnLoadFromDirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 38, Short.MAX_VALUE)
+        );
+
+        ubtnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ubtnDeleteMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ubtnDeleteLayout = new javax.swing.GroupLayout(ubtnDelete);
+        ubtnDelete.setLayout(ubtnDeleteLayout);
+        ubtnDeleteLayout.setHorizontalGroup(
+            ubtnDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        ubtnDeleteLayout.setVerticalGroup(
+            ubtnDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 38, Short.MAX_VALUE)
+        );
+
+        ubtnInstallToSdcard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ubtnInstallToSdcardMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ubtnInstallToSdcardLayout = new javax.swing.GroupLayout(ubtnInstallToSdcard);
+        ubtnInstallToSdcard.setLayout(ubtnInstallToSdcardLayout);
+        ubtnInstallToSdcardLayout.setHorizontalGroup(
+            ubtnInstallToSdcardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        ubtnInstallToSdcardLayout.setVerticalGroup(
+            ubtnInstallToSdcardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 38, Short.MAX_VALUE)
+        );
+
+        ubtnInstallToPhone.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ubtnInstallToPhoneMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ubtnInstallToPhoneLayout = new javax.swing.GroupLayout(ubtnInstallToPhone);
+        ubtnInstallToPhone.setLayout(ubtnInstallToPhoneLayout);
+        ubtnInstallToPhoneLayout.setHorizontalGroup(
+            ubtnInstallToPhoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        ubtnInstallToPhoneLayout.setVerticalGroup(
+            ubtnInstallToPhoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 38, Short.MAX_VALUE)
+        );
+
+        ubtnUninstall.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ubtnUninstallMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ubtnUninstallLayout = new javax.swing.GroupLayout(ubtnUninstall);
+        ubtnUninstall.setLayout(ubtnUninstallLayout);
+        ubtnUninstallLayout.setHorizontalGroup(
+            ubtnUninstallLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        ubtnUninstallLayout.setVerticalGroup(
+            ubtnUninstallLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 39, Short.MAX_VALUE)
+        );
+
+        ubtnClear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ubtnClearMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ubtnClearLayout = new javax.swing.GroupLayout(ubtnClear);
+        ubtnClear.setLayout(ubtnClearLayout);
+        ubtnClearLayout.setHorizontalGroup(
+            ubtnClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        ubtnClearLayout.setVerticalGroup(
+            ubtnClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(plReadme, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(203, 203, 203)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(ubtnInstallToPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ubtnUninstall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64)
+                        .addComponent(ubtnInstallToSdcard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ubtnLoadFromDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ubtnClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63)
+                        .addComponent(ubtnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ubtnLoadFromDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ubtnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ubtnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ubtnInstallToSdcard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ubtnInstallToPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ubtnUninstall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addComponent(plReadme, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ubtnLoadFromDirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ubtnLoadFromDirMouseClicked
+        // TODO add your handling code here:
+        File[] team = showOpenDialogs();
+        if (team != null && team.length > 0) {
+            for (File f : team) {
+                try {
+                    this.needInstallFiles.add(USBDeviceWorker.readAPKInfo(f.getAbsolutePath()));
+                } catch (Exception ex) {
+                    Logger.getLogger(JAndroidAPKInstaller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            this.jlAPKList.setListData(this.needInstallFiles.toArray());
+        }
+    }//GEN-LAST:event_ubtnLoadFromDirMouseClicked
+
+    private void ubtnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ubtnClearMouseClicked
+        // TODO add your handling code here:
+        this.needInstallFiles.clear();
+        this.jlAPKList.setListData(this.needInstallFiles.toArray());
+    }//GEN-LAST:event_ubtnClearMouseClicked
+
+    private void ubtnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ubtnDeleteMouseClicked
+        // TODO add your handling code here:
+        if (this.jlAPKList.getSelectedIndex() >= 0) {
+            if (this.needInstallFiles.size() > this.jlAPKList.getSelectedIndex()) {
+                this.needInstallFiles.remove(this.jlAPKList.getSelectedIndex());
+                this.jlAPKList.setListData(this.needInstallFiles.toArray());
+            }
+        }
+    }//GEN-LAST:event_ubtnDeleteMouseClicked
+
+    private void ubtnInstallToPhoneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ubtnInstallToPhoneMouseClicked
+        // TODO add your handling code here:
+        if (this.needInstallFiles.size() > 0) {
+        }
+    }//GEN-LAST:event_ubtnInstallToPhoneMouseClicked
+
+    private void ubtnUninstallMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ubtnUninstallMouseClicked
+        // TODO add your handling code here:
+        if (this.jlAPKList.getSelectedIndex() >= 0) {
+            if (this.needInstallFiles.size() > this.jlAPKList.getSelectedIndex()) {
+                final String name = this.needInstallFiles.get(this.jlAPKList.getSelectedIndex()).getPackageEngName();
+                this.plReadme.setReadmeInfo("正在卸载，请稍后...");
+                ubtnUninstall.setEnabled(false);
+
+                java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        if (USBDeviceWorker.uninstallSoftware(name)) {
+                            plReadme.setReadmeInfo("卸载完成!");
+                        } else {
+                            plReadme.setReadmeInfo("卸载失败!");
+                        }
+
+                        ubtnUninstall.setEnabled(true);
+                    }
+                });
+
+            }
+        }
+    }//GEN-LAST:event_ubtnUninstallMouseClicked
+
+    private void ubtnInstallToSdcardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ubtnInstallToSdcardMouseClicked
+        // TODO add your handling code here:
+        if (this.needInstallFiles.size() > 0) {
+        }
+    }//GEN-LAST:event_ubtnInstallToSdcardMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList jlAPKList;
+    private JAndroidInstaller.UIComponent.JReadmePanel plReadme;
+    private WSwingUILib.Component.JUIButton ubtnClear;
+    private WSwingUILib.Component.JUIButton ubtnDelete;
+    private WSwingUILib.Component.JUIButton ubtnInstallToPhone;
+    private WSwingUILib.Component.JUIButton ubtnInstallToSdcard;
+    private WSwingUILib.Component.JUIButton ubtnLoadFromDir;
+    private WSwingUILib.Component.JUIButton ubtnUninstall;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,8 @@ package JAndroidInstaller.AndroidDevice;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -72,6 +74,7 @@ public class USBDeviceWorker {
             Process pro = JAppToolKit.JRunHelper.runSysCmd(USBDeviceInstaller.androidToolDir + "/aapt dump badging " + apkFile, false);
             pro.waitFor();
             String[] infos = JAppToolKit.JDataHelper.readFromInputStream(pro.getInputStream());
+            aie.setLocalPath(apkFile);
 
             for (String sss : infos) {
                 if (sss.startsWith("package: name=")) {
@@ -126,6 +129,28 @@ public class USBDeviceWorker {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 卸载软件
+     * @param packageName
+     * @return 
+     */
+    public static Boolean uninstallSoftware(String packageName) {
+        try {
+            ArrayList<String> lines = USBDeviceWorker.adbCmdWithResult("uninstall " + packageName);
+            if (lines.get(0).contains("Success"))
+            {
+                return true;
+            }else
+            {
+                return false;
+            }            
+        } catch (Exception ex) {
+            Logger.getLogger(USBDeviceWorker.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
     }
 
     /**
@@ -232,51 +257,43 @@ public class USBDeviceWorker {
 
     /**
      * 检查文件类型（如果是文件返回真，如果是目录返回假）
+     *
      * @param source
-     * @return 
+     * @return
      */
-    public static Boolean CheckFileType(String source) throws Exception
-    {
-       ArrayList<String> returns = shellCmdWithResult("ls " + source);
-       if (returns.size() <= 1)
-       {
-           if (returns.size() > 0)
-           {
-               if (returns.get(0).contains(source))
-               {
-                   return true;
-               }else
-               {
-                   return false;
-               }
-           }else
-           {
-               return false;
-           }
-       }else
-       {
-           return false;
-       }
+    public static Boolean CheckFileType(String source) throws Exception {
+        ArrayList<String> returns = shellCmdWithResult("ls " + source);
+        if (returns.size() <= 1) {
+            if (returns.size() > 0) {
+                if (returns.get(0).contains(source)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
      * 删除文件和目录
+     *
      * @param source
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
-    public static Boolean deleteFileAndDir(String source) throws Exception
-    {
-        if (CheckFileType(source))
-        {
+    public static Boolean deleteFileAndDir(String source) throws Exception {
+        if (CheckFileType(source)) {
             //删除文件
             return shellCmdNoResult("rm " + source);
-        }else
-        {
+        } else {
             //目录目录
             return shellCmdNoResult("rm -r " + source);
         }
-    }    
+    }
 
     /**
      * 执行android的ADB命令并返回结果
@@ -300,42 +317,36 @@ public class USBDeviceWorker {
 
         return returns;
     }
-        
+
     /**
      * 判断android设备是否可用
-     * @return 
+     *
+     * @return
      */
-    public static Boolean isAndroidDeviceOnline() throws Exception
-    {
+    public static Boolean isAndroidDeviceOnline() throws Exception {
         ArrayList<String> lines = shellCmdWithResult("ls");
-        if (lines != null && lines.size() > 0)
-        {
-            if (lines.get(0).startsWith("error:"))
-            {
+        if (lines != null && lines.size() > 0) {
+            if (lines.get(0).startsWith("error:")) {
                 return false;
-            }else
-            {
+            } else {
                 return true;
             }
-        }else
-        {
+        } else {
             return false;
         }
     }
 
     /**
      * 获取Adb版本
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
-    public static String getAdbServerVersion() throws Exception
-    {
+    public static String getAdbServerVersion() throws Exception {
         ArrayList<String> lines = adbCmdWithResult("version");
-        if (lines != null && lines.size() > 0)
-        {
+        if (lines != null && lines.size() > 0) {
             return lines.get(0).replace("Android Debug Bridge version", "").trim();
-        }else
-        {
+        } else {
             return "检测失败！";
         }
     }
