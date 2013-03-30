@@ -6,6 +6,7 @@ package JAndroidInstaller.UIComponent;
 
 import JAndroidInstaller.AndroidDevice.USBDeviceChecker;
 import JAndroidInstaller.AndroidDevice.USBDeviceInstaller;
+import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
 import WSwingUILib.Component.Base.JImagePanel;
 import WSwingUILib.Component.JMiddleContentPanel;
 import java.util.ArrayList;
@@ -22,16 +23,20 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
     private int currentStepIndex = 0;
     private ArrayList<String> firstChecks = null;
     private ArrayList<String> secondChecks = null;
+    private JAPKInstallerUI parents = null;
 
     /**
      * Creates new form JAndroidDeviceCheckPanel
      */
     public JAndroidDeviceCheckPanel(JAPKInstallerUI aThis) {
         initComponents();
+        parents = aThis;
         currentStepIndex = 1;
         this.lblStep1Flag.setText("<---");
         this.lblStep2Flag.setText("");
         this.lblStep3Flag.setText("");
+        this.btnNext.buttonText = "下一步";
+        this.btnExit.buttonText = "退 出";
     }
 
     public void showStepHint(int index) {
@@ -69,15 +74,17 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
         lblProductID = new javax.swing.JLabel();
         lblProductName = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        btnNext = new javax.swing.JButton();
         lblStep1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblStep1Flag = new javax.swing.JLabel();
         lblStep3 = new javax.swing.JLabel();
         lblStep2Flag = new javax.swing.JLabel();
-        btnExit = new javax.swing.JButton();
         lblStep3Flag = new javax.swing.JLabel();
         lblStep2 = new javax.swing.JLabel();
+        btnNext = new WSwingUILib.Component.JUIButton();
+        btnExit = new WSwingUILib.Component.JUIButton();
+
+        setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -101,7 +108,7 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -121,13 +128,6 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        btnNext.setText("下一步");
-        btnNext.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNextActionPerformed(evt);
-            }
-        });
-
         lblStep1.setText("第一步，拔掉手机数据线并点击下一步按钮。");
 
         jLabel2.setText("<html>注：本程序在进行文件管理时，需要Android端有busybox的支持！<br>\n如果你在设备上使用过网页式的android管理软件，那么它可能会占用adb通道，这样的情况下，请关闭\"USB调试\"功能后重新打开!\n</html>");
@@ -138,27 +138,48 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
 
         lblStep2Flag.setText("jLabel2");
 
-        btnExit.setText("退出");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
-
         lblStep3Flag.setText("jLabel3");
 
         lblStep2.setText("第二步，插上手机数据线并点击下一步按钮。");
+
+        btnNext.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnNextMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnNextLayout = new javax.swing.GroupLayout(btnNext);
+        btnNext.setLayout(btnNextLayout);
+        btnNextLayout.setHorizontalGroup(
+            btnNextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 90, Short.MAX_VALUE)
+        );
+        btnNextLayout.setVerticalGroup(
+            btnNextLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
+        btnExit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExitMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnExitLayout = new javax.swing.GroupLayout(btnExit);
+        btnExit.setLayout(btnExitLayout);
+        btnExitLayout.setHorizontalGroup(
+            btnExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 90, Short.MAX_VALUE)
+        );
+        btnExitLayout.setVerticalGroup(
+            btnExitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnNext)
-                .addGap(176, 176, 176)
-                .addComponent(btnExit)
-                .addGap(137, 137, 137))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,13 +196,20 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblStep1Flag)))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(47, 47, 47)
+                .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -201,32 +229,24 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNext)
-                    .addComponent(btnExit)))
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(80, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        add(jPanel2);
+        jPanel2.setBounds(180, 20, 530, 420);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+    private void btnExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExitMouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnExitMouseClicked
+
+    private void btnNextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNextMouseClicked
         // TODO add your handling code here:
         if (currentStepIndex == 1) {
             try {
@@ -276,28 +296,39 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
                     }
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(null, "检测失败！请关闭程序后重新开始！");
+                    System.exit(0);
                 }
             }
         } else {
-            JAPKInstallerUI.startMainUI(JAPKInstallerUI.currentArgs);
+            try {
+                if (USBDeviceWorker.isAndroidDeviceOnline())
+                {
+                    parents.setStatusText("设备状态：已连接！");
+                    JAPKInstallerUI.startMainUI(JAPKInstallerUI.currentArgs);
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(null, "检测失败！请关闭程序后重新开始！");
+                    System.exit(0);
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(JAndroidDeviceCheckPanel.class.getName()).log(Level.SEVERE, null, ex);
+                javax.swing.JOptionPane.showMessageDialog(null, "检测失败！请关闭程序后重新开始！");
+                System.exit(0);
+            }
         }
 
         currentStepIndex++;
         showStepHint(currentStepIndex);
         if (currentStepIndex == 4) {
-            this.btnNext.setText("完成");
+            this.btnNext.buttonText = "完成";
+            this.btnNext.nowPaint();
         } else if (currentStepIndex == 3) {
-            this.btnNext.setText("安装");
+            this.btnNext.buttonText = "安装";
+            this.btnNext.nowPaint();
         }
-    }//GEN-LAST:event_btnNextActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_btnExitActionPerformed
+    }//GEN-LAST:event_btnNextMouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnExit;
-    private javax.swing.JButton btnNext;
+    private WSwingUILib.Component.JUIButton btnExit;
+    private WSwingUILib.Component.JUIButton btnNext;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
