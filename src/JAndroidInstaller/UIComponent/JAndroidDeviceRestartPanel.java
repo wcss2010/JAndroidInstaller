@@ -24,7 +24,7 @@ public class JAndroidDeviceRestartPanel extends JMiddleContentPanel {
     public JAndroidDeviceRestartPanel(JAPKInstallerUI par) {
         initComponents();
         parents = par;
-        this.btnCheck.buttonText = "我已经准备好了，立即进入主界面！";
+        this.btnCheck.setButtonText("我已经准备好了，立即进入主界面！");
         this.plreadme.setReadmeInfo("<html>欢迎使用Android简易工具箱！<br>1. 请用USB线将您的Android设备连接到电脑！ 2.请打开\"USB调试\"功能，如果已经打开，请关闭后重新打开！</html>");
     }
 
@@ -43,7 +43,7 @@ public class JAndroidDeviceRestartPanel extends JMiddleContentPanel {
 
         setLayout(null);
         add(plreadme);
-        plreadme.setBounds(40, 370, 790, 92);
+        plreadme.setBounds(40, 400, 790, 92);
 
         javax.swing.GroupLayout jImagePanel1Layout = new javax.swing.GroupLayout(jImagePanel1);
         jImagePanel1.setLayout(jImagePanel1Layout);
@@ -57,7 +57,7 @@ public class JAndroidDeviceRestartPanel extends JMiddleContentPanel {
         );
 
         add(jImagePanel1);
-        jImagePanel1.setBounds(130, 100, 620, 260);
+        jImagePanel1.setBounds(130, 110, 620, 260);
 
         btnCheck.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -69,7 +69,7 @@ public class JAndroidDeviceRestartPanel extends JMiddleContentPanel {
         btnCheck.setLayout(btnCheckLayout);
         btnCheckLayout.setHorizontalGroup(
             btnCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 210, Short.MAX_VALUE)
+            .addGap(0, 230, Short.MAX_VALUE)
         );
         btnCheckLayout.setVerticalGroup(
             btnCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -77,7 +77,7 @@ public class JAndroidDeviceRestartPanel extends JMiddleContentPanel {
         );
 
         add(btnCheck);
-        btnCheck.setBounds(630, 20, 210, 50);
+        btnCheck.setBounds(630, 20, 230, 50);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCheckMouseClicked

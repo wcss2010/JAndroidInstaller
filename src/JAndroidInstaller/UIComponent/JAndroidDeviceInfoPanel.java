@@ -27,7 +27,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
      */
     public JAndroidDeviceInfoPanel() {
         initComponents();
-        this.btnUploadImage.buttonText = "刷新";
+        this.btnUploadImage.setButtonText("刷新");
     }
 
     public void load() {

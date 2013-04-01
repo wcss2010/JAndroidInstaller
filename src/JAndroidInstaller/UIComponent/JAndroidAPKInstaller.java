@@ -29,12 +29,12 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
     public JAndroidAPKInstaller() {
         initComponents();
         plReadme.setReadmeInfo("APK批量安装");
-        this.ubtnLoadFromDir.buttonText = "批量导入";
-        this.ubtnDelete.buttonText = "删除该记录";
-        this.ubtnInstallToPhone.buttonText = "安装所有到内存";
-        this.ubtnInstallToSdcard.buttonText = "安装所有到存储卡";
-        this.ubtnUninstall.buttonText = "卸载该应用";
-        this.ubtnClear.buttonText = "清空";
+        this.ubtnLoadFromDir.setButtonText("批量导入");
+        this.ubtnDelete.setButtonText("删除该记录");
+        this.ubtnInstallToPhone.setButtonText("安装所有到内存");
+        this.ubtnInstallToSdcard.setButtonText("安装所有到存储卡");
+        this.ubtnUninstall.setButtonText("卸载该应用");
+        this.ubtnClear.setButtonText("清空");
         this.tleApkList.setBackground(Color.white);
         this.tleApkList.getTableHeader().setBackground(Color.white);
         this.tleApkList.setModel(new JAndroidAPKListModel(needInstallFiles));
@@ -90,7 +90,7 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
         ubtnLoadFromDir.setLayout(ubtnLoadFromDirLayout);
         ubtnLoadFromDirLayout.setHorizontalGroup(
             ubtnLoadFromDirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 88, Short.MAX_VALUE)
         );
         ubtnLoadFromDirLayout.setVerticalGroup(
             ubtnLoadFromDirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,7 +107,7 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
         ubtnDelete.setLayout(ubtnDeleteLayout);
         ubtnDeleteLayout.setHorizontalGroup(
             ubtnDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 96, Short.MAX_VALUE)
         );
         ubtnDeleteLayout.setVerticalGroup(
             ubtnDeleteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,7 +124,7 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
         ubtnInstallToSdcard.setLayout(ubtnInstallToSdcardLayout);
         ubtnInstallToSdcardLayout.setHorizontalGroup(
             ubtnInstallToSdcardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 127, Short.MAX_VALUE)
         );
         ubtnInstallToSdcardLayout.setVerticalGroup(
             ubtnInstallToSdcardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +141,7 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
         ubtnInstallToPhone.setLayout(ubtnInstallToPhoneLayout);
         ubtnInstallToPhoneLayout.setHorizontalGroup(
             ubtnInstallToPhoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 123, Short.MAX_VALUE)
         );
         ubtnInstallToPhoneLayout.setVerticalGroup(
             ubtnInstallToPhoneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,11 +175,11 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
         ubtnClear.setLayout(ubtnClearLayout);
         ubtnClearLayout.setHorizontalGroup(
             ubtnClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 66, Short.MAX_VALUE)
         );
         ubtnClearLayout.setVerticalGroup(
             ubtnClearLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 38, Short.MAX_VALUE)
         );
 
         tleApkList.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
@@ -219,8 +219,8 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
                         .addComponent(plReadme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(121, 121, 121)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(ubtnLoadFromDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -239,21 +239,22 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ubtnLoadFromDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ubtnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ubtnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(ubtnInstallToPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(ubtnUninstall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ubtnLoadFromDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ubtnClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ubtnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ubtnInstallToPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ubtnUninstall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(ubtnInstallToSdcard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(plReadme, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(plReadme, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

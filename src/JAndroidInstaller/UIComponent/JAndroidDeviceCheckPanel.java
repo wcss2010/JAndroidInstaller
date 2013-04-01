@@ -35,8 +35,8 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
         this.lblStep1Flag.setText("<---");
         this.lblStep2Flag.setText("");
         this.lblStep3Flag.setText("");
-        this.btnNext.buttonText = "下一步";
-        this.btnExit.buttonText = "退 出";
+        this.btnNext.setButtonText("下一步");
+        this.btnExit.setButtonText("退 出");
     }
 
     public void showStepHint(int index) {
@@ -235,7 +235,7 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
         );
 
         add(jPanel2);
-        jPanel2.setBounds(180, 20, 530, 420);
+        jPanel2.setBounds(180, 50, 530, 420);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExitMouseClicked
@@ -316,10 +316,10 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
         currentStepIndex++;
         showStepHint(currentStepIndex);
         if (currentStepIndex == 4) {
-            this.btnNext.buttonText = "完成";
+            this.btnNext.setButtonText("完成");
             this.btnNext.nowPaint();
         } else if (currentStepIndex == 3) {
-            this.btnNext.buttonText = "安装";
+            this.btnNext.setButtonText("安装");
             this.btnNext.nowPaint();
         }
     }//GEN-LAST:event_btnNextMouseClicked

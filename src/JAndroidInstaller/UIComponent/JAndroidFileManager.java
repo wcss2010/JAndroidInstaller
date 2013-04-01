@@ -47,11 +47,11 @@ public class JAndroidFileManager extends JMiddleContentPanel implements Runnable
     public JAndroidFileManager() {
         initComponents();
         plReadme.setReadmeInfo("文件管理器");
-        this.btnDeleteDir.buttonText = "删除目录";
-        this.btnDeleteFile.buttonText = "删除文件";
-        this.btnLoadFiles.buttonText = "导入文件";
-        this.btnExportFiles.buttonText = "导出文件";
-        this.btnCreateDirs.buttonText = "创建目录";
+        this.btnDeleteDir.setButtonText("删除目录");
+        this.btnDeleteFile.setButtonText("删除文件");
+        this.btnLoadFiles.setButtonText("导入文件");
+        this.btnExportFiles.setButtonText("导出文件");
+        this.btnCreateDirs.setButtonText("创建目录");
         this.tleFiles.setBackground(Color.white);
         this.trDirs.setBackground(Color.white);
         this.tleFiles.getTableHeader().setBackground(Color.white);
@@ -403,7 +403,7 @@ public class JAndroidFileManager extends JMiddleContentPanel implements Runnable
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -414,8 +414,7 @@ public class JAndroidFileManager extends JMiddleContentPanel implements Runnable
                         .addComponent(btnLoadFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnExportFiles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(plReadme, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(plReadme, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

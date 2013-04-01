@@ -227,7 +227,7 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
                             public void run() 
                             {
                                 setStatusText("设备状态：未连接！");
-                                hideAllTabButton();
+                                hideAllTabPage();
                                 showContentPanel(new JAndroidDeviceRestartPanel(mains));
                             }
                         });
@@ -245,12 +245,12 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
     public void showAllTabs() {
         enabledSwitchDeviceStart = true;
 
-        this.setActiveTabButton(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceInfoPanel());
-        this.setActiveTabButton(1, "一键安装", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/installer.png"), new JAndroidAPKInstaller());
-        //this.setActiveTabButton(2, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());
-        this.setActiveTabButton(2, "文件管理", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/manager.png"), new JAndroidFileManager());
-        this.setActiveTabButton(3, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
+        this.setTabPage(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceInfoPanel());
+        this.setTabPage(1, "一键安装", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/installer.png"), new JAndroidAPKInstaller());
+        //this.setTabPage(2, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());
+        this.setTabPage(2, "文件管理", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/manager.png"), new JAndroidFileManager());
+        this.setTabPage(3, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
 
-        this.selectTabPage(0);
+        this.setActiveTabPage(0);
     }
 }
