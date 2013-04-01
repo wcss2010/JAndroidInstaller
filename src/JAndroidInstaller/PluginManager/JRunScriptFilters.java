@@ -4,11 +4,117 @@
  */
 package JAndroidInstaller.PluginManager;
 
+import JAndroidInstaller.AndroidDevice.USBDeviceInfo;
+import JAndroidInstaller.AndroidDevice.USBDeviceInstaller;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- * 脚本点位符过滤
+ * 脚本占位符过滤器(用于将占位符替换成sh脚本运行需要的值)
+ *
  * @author wcss
  */
 public class JRunScriptFilters
 {
+    //函数常量    
+    public static String printInfoMethod = "%{print}%";
     
+    //标记常量
+    public static String adbPathMethod = "%{adbpath}%";
+    public static String printLocalVersionMethod = "%{version}%";
+    public static String printLocalLanguageMethod = "%{language}%";
+    public static String printLocalLanguageRegionMethod = "%{region}%";
+    //public static String printKernelVersionMethod = "%{kernel}%";
+    public static String printLocalModelNameMethod = "%{model}%";
+    public static String printLocalPlatformNameMethod = "%{platform}%";
+    public static String printLocalCpuNameMethod = "%{cpu}%";
+    public static String printLocalRomVersionMethod = "%{romversion}%";
+    
+    
+    /**
+     * 替换字符串(无正则方式)
+     * @param strSource
+     * @param strFrom
+     * @param strTo
+     * @return 
+     */
+    public static String replaceStr(String strSource, String strFrom, String strTo) {
+        if (strSource == null) {
+            return null;
+        }
+        int i = 0;
+        if ((i = strSource.indexOf(strFrom, i)) >= 0) {
+            char[] cSrc = strSource.toCharArray();
+            char[] cTo = strTo.toCharArray();
+            int len = strFrom.length();
+            StringBuffer buf = new StringBuffer(cSrc.length);
+            buf.append(cSrc, 0, i).append(cTo);
+            i += len;
+            int j = i;
+            while ((i = strSource.indexOf(strFrom, i)) > 0) {
+                buf.append(cSrc, j, i - j).append(cTo);
+                i += len;
+                j = i;
+            }
+            buf.append(cSrc, j, cSrc.length - j);
+            return buf.toString();
+        }
+        return strSource;
+    }
+
+    /**
+     * 替换占位字符
+     * @param str
+     * @return 
+     */
+    private static String replaceFlagStr(String str) throws Exception
+    {
+        String returns = str;
+        returns = replaceStr(returns,JRunScriptFilters.adbPathMethod,USBDeviceInstaller.androidToolDir);
+        returns = replaceStr(returns,JRunScriptFilters.printLocalVersionMethod,USBDeviceInfo.getAndroidSystemVersion());
+        returns = replaceStr(returns,JRunScriptFilters.printLocalLanguageMethod,USBDeviceInfo.getAndroidLocalLanguage());
+        returns = replaceStr(returns,JRunScriptFilters.printLocalLanguageRegionMethod,USBDeviceInfo.getAndroidLocalRegion());
+        returns = replaceStr(returns,JRunScriptFilters.printLocalModelNameMethod,USBDeviceInfo.getAndroidProductModelName());
+        returns = replaceStr(returns,JRunScriptFilters.printLocalPlatformNameMethod,USBDeviceInfo.getAndroidPlatformName());
+        returns = replaceStr(returns,JRunScriptFilters.printLocalCpuNameMethod,USBDeviceInfo.getAndroidCpuVersionName());
+        returns = replaceStr(returns,JRunScriptFilters.printLocalRomVersionMethod,USBDeviceInfo.getAndroidRomVersion());
+        
+        if (returns.contains(printInfoMethod))
+        {
+           returns = replaceStr(returns,JRunScriptFilters.printInfoMethod,"echo \"printinfo ");
+           returns = returns + "\"";
+        }       
+        
+        return returns;
+    }
+    
+    /**
+     * 替换脚本中的点位符
+     * @param source
+     * @param dest 
+     */
+    public static void filterScript(String source,String dest) throws Exception
+    {
+        String[] lines = JAppToolKit.JDataHelper.readAllLines(source);
+        ArrayList<String> output = new ArrayList<String>();
+        output.add("#!/bin/sh");
+        for(String str : lines)
+        {
+            String need = replaceFlagStr(str);
+            output.add(need);
+        }
+        
+        JAppToolKit.JDataHelper.writeAllLines(dest, output);
+    }
+    
+    public static void main(String[] args)
+    {
+        try {
+            filterScript("/home/wcss/测试.sh","/home/wcss/test.sh");
+        } catch (Exception ex) {
+            Logger.getLogger(JRunScriptFilters.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }
