@@ -400,4 +400,21 @@ public class USBDeviceWorker {
     {
         return existInDeviceFileSystem("/system/app/",new String[]{ "superuser.apk","supersu.apk" },false);
     }
+
+    /**
+     * 查询Android状态
+     * @return
+     * @throws Exception 
+     */
+    public static String getAndroidState() throws Exception
+    {
+       ArrayList<String> lines = USBDeviceWorker.adbCmdWithResult("get-state");
+       if (lines != null && lines.size() > 0)
+       {
+           return lines.get(0);
+       }else
+       {
+           throw new Exception("State Error!");
+       }
+    }
 }

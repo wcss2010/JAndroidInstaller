@@ -6,6 +6,7 @@ package JAndroidInstaller.PluginManager;
 
 import JAndroidInstaller.AndroidDevice.USBDeviceInfo;
 import JAndroidInstaller.AndroidDevice.USBDeviceInstaller;
+import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,19 +19,22 @@ import java.util.logging.Logger;
 public class JRunScriptFilters
 {
     //函数常量    
-    public static String printInfoMethod = "%{print}%";
+    public static String printInfoMethod = "%{print}";
     
-    //标记常量
-    public static String adbPathMethod = "%{adbpath}%";
-    public static String printLocalVersionMethod = "%{version}%";
-    public static String printLocalLanguageMethod = "%{language}%";
-    public static String printLocalLanguageRegionMethod = "%{region}%";
-    //public static String printKernelVersionMethod = "%{kernel}%";
-    public static String printLocalModelNameMethod = "%{model}%";
-    public static String printLocalPlatformNameMethod = "%{platform}%";
-    public static String printLocalCpuNameMethod = "%{cpu}%";
-    public static String printLocalRomVersionMethod = "%{romversion}%";
+    //标记常量    
+    private static String adbPathMethod = "%{adbpath}";
+    public static String printSelectedImageFilePath = "%{image}";
+    private static String printLocalVersionMethod = "%{version}";
+    private static String printLocalLanguageMethod = "%{language}";
+    private static String printLocalLanguageRegionMethod = "%{region}";
+    //public static String printKernelVersionMethod = "%{kernel}";
+    private static String printLocalModelNameMethod = "%{model}";
+    private static String printLocalPlatformNameMethod = "%{platform}";
+    private static String printLocalCpuNameMethod = "%{cpu}";
+    private static String printLocalRomVersionMethod = "%{romversion}";
+    private static String printAndroidStatusMethod = "%{state}";
     
+    public static String currentSelectedImageFilePath = "";
     
     /**
      * 替换字符串(无正则方式)
@@ -79,6 +83,19 @@ public class JRunScriptFilters
         returns = replaceStr(returns,JRunScriptFilters.printLocalPlatformNameMethod,USBDeviceInfo.getAndroidPlatformName());
         returns = replaceStr(returns,JRunScriptFilters.printLocalCpuNameMethod,USBDeviceInfo.getAndroidCpuVersionName());
         returns = replaceStr(returns,JRunScriptFilters.printLocalRomVersionMethod,USBDeviceInfo.getAndroidRomVersion());
+        returns = replaceStr(returns,JRunScriptFilters.printAndroidStatusMethod,USBDeviceWorker.getAndroidState());
+        
+        
+        if (returns.contains(JRunScriptFilters.printSelectedImageFilePath))
+        {
+            if (JRunScriptFilters.currentSelectedImageFilePath != null && !JRunScriptFilters.currentSelectedImageFilePath.isEmpty())
+            {
+                returns = replaceStr(returns,JRunScriptFilters.printSelectedImageFilePath,JRunScriptFilters.currentSelectedImageFilePath);
+            }else
+            {
+                throw new Exception("script run error!");
+            }
+        }
         
         if (returns.contains(printInfoMethod))
         {
@@ -111,6 +128,7 @@ public class JRunScriptFilters
     public static void main(String[] args)
     {
         try {
+            JRunScriptFilters.currentSelectedImageFilePath = "/home/wcss/image.img";
             filterScript("/home/wcss/测试.sh","/home/wcss/test.sh");
         } catch (Exception ex) {
             Logger.getLogger(JRunScriptFilters.class.getName()).log(Level.SEVERE, null, ex);
