@@ -132,7 +132,6 @@ public class JRunScriptFilters
             filterScript("/home/wcss/测试.sh","/home/wcss/test.sh");
         } catch (Exception ex) {
             Logger.getLogger(JRunScriptFilters.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        }        
     }
 }

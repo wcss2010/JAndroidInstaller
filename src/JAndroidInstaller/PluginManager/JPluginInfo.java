@@ -19,6 +19,9 @@ public class JPluginInfo implements Serializable {
     private String pluginUIType;
     private String pluginInfo;
     private String pluginWorkspace;
+    private String needAndroidVersion;
+    private int needRoot;
+    private String needDeviceState;
 
     public JPluginInfo(){ }
     
@@ -127,6 +130,48 @@ public class JPluginInfo implements Serializable {
      */
     public void setPluginWorkspace(String pluginWorkspace) {
         this.pluginWorkspace = pluginWorkspace;
+    }
+
+    /**
+     * @return the needAndroidVersion
+     */
+    public String getNeedAndroidVersion() {
+        return needAndroidVersion;
+    }
+
+    /**
+     * @param needAndroidVersion the needAndroidVersion to set
+     */
+    public void setNeedAndroidVersion(String needAndroidVersion) {
+        this.needAndroidVersion = needAndroidVersion;
+    }
+
+    /**
+     * @return the needRoot
+     */
+    public int getNeedRoot() {
+        return needRoot;
+    }
+
+    /**
+     * @param needRoot the needRoot to set
+     */
+    public void setNeedRoot(int needRoot) {
+        this.needRoot = needRoot;
+    }
+
+    /**
+     * @return the needDeviceState
+     */
+    public String getNeedDeviceState() {
+        return needDeviceState;
+    }
+
+    /**
+     * @param needDeviceState the needDeviceState to set
+     */
+    public void setNeedDeviceState(String needDeviceState) {
+        this.needDeviceState = needDeviceState;
     }
 
 }
