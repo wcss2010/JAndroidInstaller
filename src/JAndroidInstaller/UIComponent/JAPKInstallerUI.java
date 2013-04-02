@@ -252,5 +252,22 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         this.setTabPage(3, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
 
         this.setActiveTabPage(0);
+        this.checkAndroidRoot();
+    }
+
+    private void checkAndroidRoot()
+    {
+        try {
+            if (USBDeviceWorker.installedRootTools())
+            {
+                this.setSoftInfo("很高兴的告诉您!本机已root!");
+            }else
+            {
+                this.setSoftInfo("对不起,您的设备没有root!");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(JAPKInstallerUI.class.getName()).log(Level.SEVERE, null, ex);
+            this.setSoftInfo("Android Simple ToolBox");
+        }
     }
 }

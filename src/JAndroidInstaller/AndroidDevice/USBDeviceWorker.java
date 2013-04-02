@@ -350,4 +350,54 @@ public class USBDeviceWorker {
             return "检测失败！";
         }
     }
+
+    /*
+     * 判断Android下有没有列表内的文件
+     */
+    public static Boolean existInDeviceFileSystem(String androiddir,String[] names,Boolean needallexist) throws Exception
+    {
+        int existcount = 0;
+        ArrayList<String> data = USBDeviceWorker.shellCmdWithResult("ls " + androiddir);
+        for(String line:data)
+        {
+            for(String flag:names)
+            {
+                if (line.toLowerCase().equals(flag.toLowerCase()))
+                {
+                    existcount++;
+                    break;
+                }
+            }
+        }
+        
+        if (needallexist)
+        {
+            if (existcount == names.length)
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }else
+        {
+            if (existcount >= 1)
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }     
+    }
+
+    /**
+     * 判断本机是否已ROOT
+     * @return
+     * @throws Exception 
+     */
+    public static Boolean installedRootTools() throws Exception
+    {
+        return existInDeviceFileSystem("/system/app/",new String[]{ "superuser.apk","supersu.apk" },false);
+    }
 }
