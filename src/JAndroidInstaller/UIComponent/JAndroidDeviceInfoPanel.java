@@ -31,8 +31,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
     }
 
     public void load() {
-        try 
-        {
+        try {
             new Thread(this).start();
             this.lblDeviceNe.setText("型号：" + USBDeviceInfo.getAndroidProductModelName());
             this.lblDeviceName.setText("型号：" + USBDeviceInfo.getAndroidProductModelName());
@@ -43,16 +42,29 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
             this.lblRomVersion.setText("版本号：" + USBDeviceInfo.getAndroidRomVersion());
             this.lblBuildDate.setText("制作日期：" + new Date(USBDeviceInfo.getAndroidSystemInfo("ro.build.date=")).toLocaleString());
             this.lblKernelVersion.setText("<html>内核版本：" + USBDeviceInfo.getKernelVersion() + "</html>");
+
+            checkAndroidRoot();
             
-            if (isUseFrameBuffer())
-            {
-                this.cbScreenSize.setVisible(true);                
-            }else
-            {
+            if (isUseFrameBuffer()) {
+                this.cbScreenSize.setVisible(true);
+            } else {
                 this.cbScreenSize.setVisible(false);
             }
         } catch (Exception ex) {
             Logger.getLogger(JAndroidDeviceInfoPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void checkAndroidRoot() {
+        try {
+            if (USBDeviceWorker.installedRootTools()) {
+                this.lblRootInfo.setText("** 很高兴的告诉您!本机已root!");
+            } else {
+                this.lblRootInfo.setText("** 对不起,您的设备没有root!");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(JAPKInstallerUI.class.getName()).log(Level.SEVERE, null, ex);
+            this.lblRootInfo.setText("** 对不起,您的设备没有root!");
         }
     }
 
@@ -77,6 +89,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         lblKernelVersion = new javax.swing.JLabel();
         lblBuildDate = new javax.swing.JLabel();
         cbScreenSize = new javax.swing.JComboBox();
+        lblRootInfo = new javax.swing.JLabel();
 
         image.setBackground(new java.awt.Color(0, 0, 0));
         image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -140,6 +153,9 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         cbScreenSize.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         cbScreenSize.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "240*400", "320*480", "480*640", "480*800", "768*1024", "800*1280" }));
 
+        lblRootInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblRootInfo.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,7 +169,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
                         .addComponent(cbScreenSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblRomVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDeviceName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -162,65 +178,64 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
                     .addComponent(lblCpuName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPlatformName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBuildDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblKernelVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                    .addComponent(lblKernelVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRootInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRomVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCpuName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPlatformName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblBuildDate, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblKernelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblRomVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblCpuName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPlatformName, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblBuildDate, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblKernelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblRootInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     /**
      * 是否只能采用FrameBuffer方式获取图片
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
-    public Boolean isUseFrameBuffer() throws Exception
-    {
+    public Boolean isUseFrameBuffer() throws Exception {
         ArrayList<String> lines = USBDeviceWorker.shellCmdWithResult("screenshot --help");
-        if (lines.size() > 0)
-        {
-            if (lines.get(0).endsWith("not found"))
-            {
+        if (lines.size() > 0) {
+            if (lines.get(0).endsWith("not found")) {
                 return true;
-            }else
-            {
+            } else {
                 return false;
             }
-        }else
-        {
+        } else {
             return true;
         }
     }
-    
+
     private void btnUploadImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUploadImageMouseClicked
         // TODO add your handling code here:
         uploadAndroidScreen();
@@ -238,6 +253,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
     private javax.swing.JLabel lblPlatformName;
     private javax.swing.JLabel lblRomVersion;
     private javax.swing.JLabel lblRomVersionInfo;
+    private javax.swing.JLabel lblRootInfo;
     // End of variables declaration//GEN-END:variables
 
     private void uploadAndroidScreen() {
@@ -252,8 +268,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
     }
 
     @Override
-    public void run() 
-    {
+    public void run() {
         uploadAndroidScreen();
     }
 }
