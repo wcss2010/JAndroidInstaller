@@ -7,6 +7,7 @@ package JAndroidInstaller.PluginManager;
 import JAndroidInstaller.AndroidDevice.USBDeviceInfo;
 import JAndroidInstaller.AndroidDevice.USBDeviceInstaller;
 import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ public class JRunScriptFilters
 {
     //函数常量    
     public static String printInfoMethod = "%{print}";
+    public static String waitStateMethod = "%{wait}";
     
     //标记常量    
     private static String adbPathMethod = "%{adbpath}";
@@ -123,6 +125,33 @@ public class JRunScriptFilters
         }
         
         JAppToolKit.JDataHelper.writeAllLines(dest, output);
+    }
+    
+    /**
+     * 检查脚本中是否存在指定字符串
+     * @param file
+     * @param marker
+     * @return 
+     */
+    public static Boolean existStrInScript(String file,String marker) throws Exception
+    {
+       if (new File(file).exists())
+       {
+           Boolean returns = false;
+           String[] cnts = JAppToolKit.JDataHelper.readAllLines(file);
+           for(String s : cnts)
+           {
+               if (s.contains(marker))
+               {
+                   returns = true;
+                   break;
+               }
+           }
+           return returns;
+       }else
+       {
+           return false;
+       }
     }
     
     public static void main(String[] args)

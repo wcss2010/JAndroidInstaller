@@ -42,6 +42,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
             this.lblRomVersion.setText("版本号：" + USBDeviceInfo.getAndroidRomVersion());
             this.lblBuildDate.setText("制作日期：" + new Date(USBDeviceInfo.getAndroidSystemInfo("ro.build.date=")).toLocaleString());
             this.lblKernelVersion.setText("<html>内核版本：" + USBDeviceInfo.getKernelVersion() + "</html>");
+            this.lblDeviceState.setText("设备状态：" + USBDeviceWorker.getAndroidState());
 
             checkAndroidRoot();
             
@@ -90,6 +91,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         lblBuildDate = new javax.swing.JLabel();
         cbScreenSize = new javax.swing.JComboBox();
         lblRootInfo = new javax.swing.JLabel();
+        lblDeviceState = new javax.swing.JLabel();
 
         image.setBackground(new java.awt.Color(0, 0, 0));
         image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -156,6 +158,9 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         lblRootInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
         lblRootInfo.setText("jLabel1");
 
+        lblDeviceState.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblDeviceState.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,7 +184,8 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
                     .addComponent(lblPlatformName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBuildDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblKernelVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblRootInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblRootInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDeviceState, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
@@ -212,8 +218,10 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblKernelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDeviceState, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblRootInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -249,6 +257,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
     private javax.swing.JLabel lblCpuName;
     private javax.swing.JLabel lblDeviceName;
     private javax.swing.JLabel lblDeviceNe;
+    private javax.swing.JLabel lblDeviceState;
     private javax.swing.JLabel lblKernelVersion;
     private javax.swing.JLabel lblPlatformName;
     private javax.swing.JLabel lblRomVersion;

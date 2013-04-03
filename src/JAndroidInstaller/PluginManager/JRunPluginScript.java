@@ -37,21 +37,38 @@ public class JRunPluginScript {
 
     /**
      * 运行脚本
-     *
      * @param workspace
+     * @param imageFile
      * @param scriptPath
      * @throws Exception
      */
-    public void runScript(String workspace, String imageFile, String scriptPath) throws Exception {
-        String destPath = JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/plugin_" + new Date().getTime() + ".sh";
-        JRunScriptFilters.currentSelectedImageFilePath = imageFile;
-        JRunScriptFilters.filterScript(scriptPath, destPath);
+    public void runScript(String workspace, String imageFile, String scriptPath) throws Exception
+    {        
+        JRunScriptFilters.currentSelectedImageFilePath = imageFile;        
+        if (JRunScriptFilters.existStrInScript(scriptPath, JRunScriptFilters.waitStateMethod))
+        {
+           throw new Exception("error script!");
+        }else
+        {
+           String destPath = JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/plugin_" + new Date().getTime() + ".sh";
+           JRunScriptFilters.filterScript(scriptPath, destPath);
+           traceScript(destPath,workspace);
+        }        
+    } 
 
+    /**
+     * 跟踪运行脚本 
+     * @param start
+     * @param workspace
+     * @throws Exception 
+     */
+    private void traceScript(String start,String workspace) throws Exception
+    {
         ArrayList<String> startupPlugin = new ArrayList<String>();
         startupPlugin.add("#!/bin/sh");
         startupPlugin.add("cd " + workspace);
-        startupPlugin.add("chmod +x " + destPath);
-        startupPlugin.add(destPath);
+        startupPlugin.add("chmod +x " + start);
+        startupPlugin.add(start);
         String runP = JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/run_" + new Date().getTime() + ".sh";
         JAppToolKit.JDataHelper.writeAllLines(runP, startupPlugin);
         JAppToolKit.JRunHelper.runSysCmd("chmod +x " + runP);
@@ -86,7 +103,8 @@ public class JRunPluginScript {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         try {
             JRunPluginScript rps = new JRunPluginScript();            
             rps.runScript("/home/wcss/","/home/wcss/image.img","/home/wcss/测试.sh");

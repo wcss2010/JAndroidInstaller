@@ -4,19 +4,30 @@
  */
 package JAndroidInstaller.UIComponent;
 
+import JAndroidInstaller.PluginManager.JPluginInfo;
 import WSwingUILib.Component.JMiddleContentPanel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author wcss
  */
-public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
-
+public class JAndroidUsefulToolPanel extends JMiddleContentPanel
+{
     /**
      * Creates new form JAndroidUsefulToolPanel
      */
     public JAndroidUsefulToolPanel() {
         initComponents();
+    }
+
+    /**
+     * 载入
+     */
+    public void load()
+    {
+        
     }
 
     /**
@@ -28,30 +39,37 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        plToolList = new WSwingUILib.Component.JMiddleContentPanel();
 
-        jLabel1.setFont(new java.awt.Font("文泉驿微米黑", 1, 24)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("设计之中，暂不开放！");
+        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        javax.swing.GroupLayout plToolListLayout = new javax.swing.GroupLayout(plToolList);
+        plToolList.setLayout(plToolListLayout);
+        plToolListLayout.setHorizontalGroup(
+            plToolListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 821, Short.MAX_VALUE)
+        );
+        plToolListLayout.setVerticalGroup(
+            plToolListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 434, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(plToolList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 776, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 839, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(52, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private WSwingUILib.Component.JMiddleContentPanel plToolList;
     // End of variables declaration//GEN-END:variables
 }
