@@ -54,7 +54,7 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         this.setSoftName("Android简易工具箱");
         this.setSoftInfo("Android Simple ToolBox");
         this.setStatusText("设备状态：未连接！");
-        this.setVersionText("版本：V1.5");
+        this.setVersionText("版本：V1.5.1");
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
         if (taskNum == 0) {
             this.showContentPanel(new JAndroidDeviceCheckPanel(this));
