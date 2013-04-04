@@ -61,14 +61,15 @@ public class JPluginRunPanel extends JMiddleContentPanel implements JPluginScrip
         jScrollPane1.setAutoscrolls(true);
 
         jEditorPane1.setEditable(false);
+        jEditorPane1.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(jEditorPane1);
 
-        plSelectFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        plSelectFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         jLabel1.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
-        jLabel1.setText("映像文件：");
+        jLabel1.setText("镜像文件：");
 
-        ubtnSelectFile.setButtonText("选择映像文件");
+        ubtnSelectFile.setButtonText("选择镜像文件");
         ubtnSelectFile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ubtnSelectFileMouseClicked(evt);
@@ -97,7 +98,7 @@ public class JPluginRunPanel extends JMiddleContentPanel implements JPluginScrip
                 .addComponent(txtFile, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ubtnSelectFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         plSelectFileLayout.setVerticalGroup(
             plSelectFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,7 +113,7 @@ public class JPluginRunPanel extends JMiddleContentPanel implements JPluginScrip
                 .addContainerGap())
         );
 
-        plPluginStartup.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
+        plPluginStartup.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         ubtnRun.setButtonText("运行");
         ubtnRun.setFont(new java.awt.Font("文泉驿微米黑", 0, 18)); // NOI18N
@@ -193,7 +194,7 @@ public class JPluginRunPanel extends JMiddleContentPanel implements JPluginScrip
      */
     private String showOpenDialog() {
         JFileChooser parseDir = new JFileChooser();
-        parseDir.setDialogTitle("选择映像文件！（支持：.img,.zip）");
+        parseDir.setDialogTitle("选择镜像文件！（支持：.img,.zip）");
         parseDir.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int result = parseDir.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION) {
