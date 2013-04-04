@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author wcss
  */
-public class JRunPluginScript {
+public class JRunPluginScript implements Runnable {
 
     private JPluginScriptRequest requestEvent;
 
@@ -37,33 +37,31 @@ public class JRunPluginScript {
 
     /**
      * 运行脚本
+     *
      * @param workspace
      * @param imageFile
      * @param scriptPath
      * @throws Exception
      */
-    public void runScript(String workspace, String imageFile, String scriptPath) throws Exception
-    {        
-        JRunScriptFilters.currentSelectedImageFilePath = imageFile;        
-        if (JRunScriptFilters.existStrInScript(scriptPath, JRunScriptFilters.waitStateMethod))
-        {
-           throw new Exception("error script!");
-        }else
-        {
-           String destPath = JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/plugin_" + new Date().getTime() + ".sh";
-           JRunScriptFilters.filterScript(scriptPath, destPath);
-           traceScript(destPath,workspace);
-        }        
-    } 
+    public void runScript(String workspace, String imageFile, String scriptPath) throws Exception {
+        JRunScriptFilters.currentSelectedImageFilePath = imageFile;
+        if (JRunScriptFilters.existStrInScript(scriptPath, JRunScriptFilters.waitStateMethod)) {
+            throw new Exception("error script!");
+        } else {
+            String destPath = JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/plugin_" + new Date().getTime() + ".sh";
+            JRunScriptFilters.filterScript(scriptPath, destPath);
+            traceScript(destPath, workspace);
+        }
+    }
 
     /**
-     * 跟踪运行脚本 
+     * 跟踪运行脚本
+     *
      * @param start
      * @param workspace
-     * @throws Exception 
+     * @throws Exception
      */
-    private void traceScript(String start,String workspace) throws Exception
-    {
+    private void traceScript(String start, String workspace) throws Exception {
         ArrayList<String> startupPlugin = new ArrayList<String>();
         startupPlugin.add("#!/bin/sh");
         startupPlugin.add("cd " + workspace);
@@ -73,8 +71,27 @@ public class JRunPluginScript {
         JAppToolKit.JDataHelper.writeAllLines(runP, startupPlugin);
         JAppToolKit.JRunHelper.runSysCmd("chmod +x " + runP);
 
-        Process cc = JAppToolKit.JRunHelper.runSysCmd(runP, false);
+        threadRunScript = runP;
+        Thread tt = new Thread(this);
+        tt.setDaemon(true);
+        tt.start();
+    }
+
+    public static void main(String[] args) {
         try {
+            JRunPluginScript rps = new JRunPluginScript();
+            rps.runScript("/home/wcss/", "/home/wcss/image.img", "/home/wcss/测试.sh");
+        } catch (Exception ex) {
+            Logger.getLogger(JRunScriptFilters.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private String threadRunScript = "";
+
+    @Override
+    public void run() {
+
+        try {
+            Process cc = JAppToolKit.JRunHelper.runSysCmd(threadRunScript, false);
             //InputStream errorin = cc.getErrorStream();
             InputStream showin = cc.getInputStream();
 
@@ -98,18 +115,6 @@ public class JRunPluginScript {
             //errorin.close();
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw ex;
-        }
-
-    }
-
-    public static void main(String[] args)
-    {
-        try {
-            JRunPluginScript rps = new JRunPluginScript();            
-            rps.runScript("/home/wcss/","/home/wcss/image.img","/home/wcss/测试.sh");
-        } catch (Exception ex) {
-            Logger.getLogger(JRunScriptFilters.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

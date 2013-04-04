@@ -4,13 +4,21 @@
  */
 package JAndroidInstaller.UIComponent;
 
+import JAndroidInstaller.AndroidDevice.USBDeviceInfo;
+import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
 import JAndroidInstaller.PluginManager.JPluginInfo;
+import JAndroidInstaller.PluginManager.JRunPluginScript;
+import JAndroidInstaller.PluginManager.JRunScriptFilters;
 import JAndroidInstaller.PluginManager.JSearchPlugins;
 import WSwingUILib.Component.Base.JImagePanel;
 import WSwingUILib.Component.JMiddleContentPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +30,7 @@ import java.util.logging.Logger;
 public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
 
     ArrayList<JPluginInfo> plugins = null;
+    private JRunPluginScript scriptRun = new JRunPluginScript();
 
     /**
      * Creates new form JAndroidUsefulToolPanel
@@ -35,20 +44,94 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
     /**
      * 载入
      */
+    @Override
     public void load() {
         plugins = JSearchPlugins.searchPlugins();
         System.out.println("有效插件：" + plugins.size() + "个");
         //JImagePanel panel = null;
 
+        plToolContent.removeAll();
+        this.plToolContent.validate();
+        
         this.plToolContent.setPreferredSize(new Dimension(800, 516));
         int panelCount = 1 + (plugins.size() / 8);
         for (JPluginInfo jpi : plugins) {
             JToolListButton jlb = new JToolListButton();
             jlb.setPluginObj(jpi);
+            jlb.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    onClickPlugin((JToolListButton) e.getSource());
+                }
+            });
             plToolContent.add(jlb);
         }
         this.plToolContent.setPreferredSize(new Dimension(800, panelCount * 155));
-        this.plToolContent.invalidate();
+        this.plToolContent.validate();
+    }
+
+    /**
+     * 判断条件是否通过
+     *
+     * @param jpii
+     * @return
+     * @throws Exception
+     */
+    public Boolean checkPluginProperty(JPluginInfo jpii) throws Exception {
+        Boolean needstartup = true;
+
+        if ((jpii.getNeedAndroidVersion() != null && !jpii.getNeedAndroidVersion().contains(USBDeviceInfo.getAndroidSystemVersion())) && (jpii.getNeedAndroidVersion() != null && !jpii.getNeedAndroidVersion().equals("all"))) {
+            needstartup = false;
+        }
+
+        if (jpii.getNeedRoot() == 1) {
+            if (!USBDeviceWorker.installedRootTools()) {
+                needstartup = false;
+            }
+        }
+
+        if ((jpii.getNeedDeviceState() != null && !jpii.getNeedDeviceState().equals("all")) && (jpii.getNeedDeviceState() != null && !jpii.getNeedDeviceState().contains(USBDeviceWorker.getAndroidState()))) {
+            needstartup = false;
+        }
+
+        if (new File(jpii.getPluginWorkspace() + "/model.txt").exists()) {
+            if (!JRunScriptFilters.existStrInScript(jpii.getPluginWorkspace() + "/model.txt", USBDeviceInfo.getAndroidProductModelName())) {
+                needstartup = false;
+            }
+        }
+
+        return needstartup;
+    }
+
+    /**
+     * 点击某个插件
+     *
+     * @param jToolListButton
+     */
+    private void onClickPlugin(JToolListButton button) {
+        JPluginInfo jpi = button.getPluginObj();
+        try {
+            if (checkPluginProperty(jpi)) {                
+                //通过
+                if (jpi.getPluginUIType() != null && jpi.getPluginUIType().equals("no"))
+                {
+                   if (new File(jpi.getPluginWorkspace() + "/run.sh").exists())
+                   {
+                       scriptRun.runScript(jpi.getPluginWorkspace(), "", jpi.getPluginWorkspace() + "/run.sh");
+                       javax.swing.JOptionPane.showMessageDialog(null, "完成！");
+                   }
+                }else
+                {
+                   getMainPanel().showContentPanel(new JPluginRunPanel(jpi,false));
+                }
+            } else {
+                //不通过
+                getMainPanel().showContentPanel(new JPluginRunPanel(jpi,true));
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(JAndroidUsefulToolPanel.class.getName()).log(Level.SEVERE, null, ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "功能插件执行失败！");
+        }
     }
 
     /**
