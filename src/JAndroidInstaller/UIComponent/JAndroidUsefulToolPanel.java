@@ -5,7 +5,13 @@
 package JAndroidInstaller.UIComponent;
 
 import JAndroidInstaller.PluginManager.JPluginInfo;
+import JAndroidInstaller.PluginManager.JSearchPlugins;
+import WSwingUILib.Component.Base.JImagePanel;
 import WSwingUILib.Component.JMiddleContentPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,21 +19,36 @@ import java.util.logging.Logger;
  *
  * @author wcss
  */
-public class JAndroidUsefulToolPanel extends JMiddleContentPanel
-{
+public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
+
+    ArrayList<JPluginInfo> plugins = null;
+
     /**
      * Creates new form JAndroidUsefulToolPanel
      */
     public JAndroidUsefulToolPanel() {
         initComponents();
+        this.plToolContent.setBackground(Color.white);
+        //this.plToolList.setBackground(Color.white);
     }
 
     /**
      * 载入
      */
-    public void load()
-    {
-        
+    public void load() {
+        plugins = JSearchPlugins.searchPlugins();
+        System.out.println("有效插件：" + plugins.size() + "个");
+        //JImagePanel panel = null;
+
+        this.plToolContent.setPreferredSize(new Dimension(800, 516));
+        int panelCount = 1 + (plugins.size() / 8);
+        for (JPluginInfo jpi : plugins) {
+            JToolListButton jlb = new JToolListButton();
+            jlb.setPluginObj(jpi);
+            plToolContent.add(jlb);
+        }
+        this.plToolContent.setPreferredSize(new Dimension(800, panelCount * 155));
+        this.plToolContent.invalidate();
     }
 
     /**
@@ -40,36 +61,29 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        plToolList = new WSwingUILib.Component.JMiddleContentPanel();
+        plToolContent = new WSwingUILib.Component.Base.JImagePanel();
 
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(834, 516));
 
-        javax.swing.GroupLayout plToolListLayout = new javax.swing.GroupLayout(plToolList);
-        plToolList.setLayout(plToolListLayout);
-        plToolListLayout.setHorizontalGroup(
-            plToolListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 821, Short.MAX_VALUE)
-        );
-        plToolListLayout.setVerticalGroup(
-            plToolListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
-        );
-
-        jScrollPane1.setViewportView(plToolList);
+        plToolContent.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
+        plToolContent.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jScrollPane1.setViewportView(plToolContent);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 839, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private WSwingUILib.Component.JMiddleContentPanel plToolList;
+    private WSwingUILib.Component.Base.JImagePanel plToolContent;
     // End of variables declaration//GEN-END:variables
 }
