@@ -56,15 +56,23 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
         this.plToolContent.setPreferredSize(new Dimension(800, 516));
         int panelCount = 1 + (plugins.size() / 8);
         for (JPluginInfo jpi : plugins) {
-            JToolListButton jlb = new JToolListButton();
-            jlb.setPluginObj(jpi);
-            jlb.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    onClickPlugin((JToolListButton) e.getSource());
+            try {
+                if (checkPluginProperty(jpi)) {
+                    JToolListButton jlb = new JToolListButton();
+                    jlb.setPluginObj(jpi);
+                    jlb.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            onClickPlugin((JToolListButton) e.getSource());
+                        }
+                    });
+                    plToolContent.add(jlb);
+                } else {
+                    System.out.println("插件" + jpi.getPluginName() + "在此模式下不可用被丢弃！");
                 }
-            });
-            plToolContent.add(jlb);
+            } catch (Exception ex) {
+                Logger.getLogger(JAndroidUsefulToolPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.plToolContent.setPreferredSize(new Dimension(800, panelCount * 155));
         this.plToolContent.validate();
@@ -80,12 +88,10 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
     public Boolean checkPluginProperty(JPluginInfo jpii) throws Exception {
         Boolean needstartup = true;
 
-        if (USBDeviceWorker.isFastBootMode())
-        {
+        if (USBDeviceWorker.isFastBootMode()) {
             if (jpii.getNeedDeviceState().trim().equals("all") || jpii.getNeedDeviceState().trim().equals("fastboot")) {
                 needstartup = true;
-            }else
-            {
+            } else {
                 needstartup = false;
             }
         } else {
