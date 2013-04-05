@@ -57,9 +57,9 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         this.setVersionText("版本：V1.5.1");
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
         if (taskNum == 0) {
-            this.showContentPanel(new JAndroidDeviceCheckPanel(this));
+            switchToDriverState(this);
         } else if (taskNum == 1) {
-            this.showContentPanel(new JAndroidDeviceRestartPanel(this));
+            switchToReadyState(this);
         }
     }
 
@@ -209,6 +209,28 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         }
     }
 
+    /**
+     * 切换到驱动安装状态
+     * @param mains 
+     */
+    private void switchToDriverState(JAPKInstallerUI mains)
+    {
+        this.setTabPage(0, "驱动安装", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceCheckPanel(mains));
+        this.setTabPage(1, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
+        this.setActiveTabPage(0);
+    }
+    
+    /**
+     * 切换到准备连接状态
+     * @param mains 
+     */
+    private void switchToReadyState(JAPKInstallerUI mains)
+    {
+        this.setTabPage(0, "准备连接", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceRestartPanel(mains));
+        this.setTabPage(1, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
+        this.setActiveTabPage(0);
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -224,11 +246,10 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
                     if (!USBDeviceWorker.isAndroidDeviceOnline()) {
                         enabledSwitchDeviceStart = false;
                         java.awt.EventQueue.invokeLater(new Runnable() {
-                            public void run() 
-                            {
+                            public void run() {
                                 setStatusText("设备状态：未连接！");
                                 hideAllTabPage();
-                                showContentPanel(new JAndroidDeviceRestartPanel(mains));
+                                switchToReadyState(mains);
                             }
                         });
                     }

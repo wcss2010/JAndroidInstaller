@@ -133,19 +133,18 @@ public class USBDeviceWorker {
 
     /**
      * 卸载软件
+     *
      * @param packageName
-     * @return 
+     * @return
      */
     public static Boolean uninstallSoftware(String packageName) {
         try {
             ArrayList<String> lines = USBDeviceWorker.adbCmdWithResult("uninstall " + packageName);
-            if (lines.get(0).contains("Success"))
-            {
+            if (lines.get(0).contains("Success")) {
                 return true;
-            }else
-            {
+            } else {
                 return false;
-            }            
+            }
         } catch (Exception ex) {
             Logger.getLogger(USBDeviceWorker.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -354,67 +353,89 @@ public class USBDeviceWorker {
     /*
      * 判断Android下有没有列表内的文件
      */
-    public static Boolean existInDeviceFileSystem(String androiddir,String[] names,Boolean needallexist) throws Exception
-    {
+    public static Boolean existInDeviceFileSystem(String androiddir, String[] names, Boolean needallexist) throws Exception {
         int existcount = 0;
         ArrayList<String> data = USBDeviceWorker.shellCmdWithResult("ls " + androiddir);
-        for(String line:data)
-        {
-            for(String flag:names)
-            {
-                if (line.toLowerCase().equals(flag.toLowerCase()))
-                {
+        for (String line : data) {
+            for (String flag : names) {
+                if (line.toLowerCase().equals(flag.toLowerCase())) {
                     existcount++;
                     break;
                 }
             }
         }
-        
-        if (needallexist)
-        {
-            if (existcount == names.length)
-            {
+
+        if (needallexist) {
+            if (existcount == names.length) {
                 return true;
-            }else
-            {
+            } else {
                 return false;
             }
-        }else
-        {
-            if (existcount >= 1)
-            {
+        } else {
+            if (existcount >= 1) {
                 return true;
-            }else
-            {
+            } else {
                 return false;
             }
-        }     
+        }
     }
 
     /**
      * 判断本机是否已ROOT
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
-    public static Boolean installedRootTools() throws Exception
-    {
-        return existInDeviceFileSystem("/system/app/",new String[]{ "superuser.apk","supersu.apk" },false);
+    public static Boolean installedRootTools() throws Exception {
+        return existInDeviceFileSystem("/system/app/", new String[]{"superuser.apk", "supersu.apk"}, false);
     }
 
     /**
      * 查询Android状态
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
-    public static String getAndroidState() throws Exception
-    {
-       ArrayList<String> lines = USBDeviceWorker.adbCmdWithResult("get-state");
-       if (lines != null && lines.size() > 0)
-       {
-           return lines.get(0);
-       }else
-       {
-           throw new Exception("State Error!");
-       }
+    public static String getAndroidState() throws Exception {
+        ArrayList<String> lines = USBDeviceWorker.adbCmdWithResult("get-state");
+        if (lines != null && lines.size() > 0) {
+            return lines.get(0);
+        } else {
+            throw new Exception("State Error!");
+        }
+    }
+
+    /**
+     * 执行android的FastBoot命令并返回结果
+     *
+     * @param androidLines
+     * @return
+     * @throws Exception
+     */
+    public static ArrayList<String> fastbootCmdWithResult(String androidLines) throws Exception {
+        ArrayList<String> returns = new ArrayList<String>();
+        String installCmd = USBDeviceInstaller.androidToolDir + "/fastboot " + androidLines;
+        Process pro = JAppToolKit.JRunHelper.runSysCmd(installCmd, false);
+        pro.waitFor();
+        String[] cntss = JAppToolKit.JDataHelper.readFromInputStream(pro.getInputStream());
+        Boolean installOk = false;
+        for (String ult : cntss) {
+            returns.add(ult);
+        }
+        return returns;
+    }
+
+    /**
+     * 判断设备是否为fastboot模式
+     *
+     * @return
+     */
+    public static Boolean isFastBootMode() throws Exception {
+        ArrayList<String> lines = fastbootCmdWithResult("devices");
+        if (lines == null || (lines != null && lines.size() <= 0)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

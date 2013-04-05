@@ -5,6 +5,7 @@
 package JAndroidInstaller.UIComponent;
 
 import JAndroidInstaller.PluginManager.JPluginInfo;
+import JAndroidInstaller.PluginManager.JRunScriptFilters;
 import WSwingUILib.Component.Base.JImagePanel;
 import java.awt.Color;
 import java.awt.Image;
@@ -101,7 +102,8 @@ public class JToolListButton extends JImagePanel {
             this.lblName.setText(pluginObj.getPluginName());
         }else
         {
-            this.lblName.setText("<html>" + pluginObj.getPluginName() + "</html>");
+            String name = JRunScriptFilters.replaceStr(pluginObj.getPluginName(),"[br]","<br>");
+            this.lblName.setText("<html>" + name + "</html>");
         }
     }
 }

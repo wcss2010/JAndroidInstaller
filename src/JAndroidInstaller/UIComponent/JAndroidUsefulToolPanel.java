@@ -52,7 +52,7 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
 
         plToolContent.removeAll();
         this.plToolContent.validate();
-        
+
         this.plToolContent.setPreferredSize(new Dimension(800, 516));
         int panelCount = 1 + (plugins.size() / 8);
         for (JPluginInfo jpi : plugins) {
@@ -80,22 +80,33 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
     public Boolean checkPluginProperty(JPluginInfo jpii) throws Exception {
         Boolean needstartup = true;
 
-        if ((jpii.getNeedAndroidVersion() != null && !jpii.getNeedAndroidVersion().contains(USBDeviceInfo.getAndroidSystemVersion())) && (jpii.getNeedAndroidVersion() != null && !jpii.getNeedAndroidVersion().equals("all"))) {
-            needstartup = false;
-        }
-
-        if (jpii.getNeedRoot() == 1) {
-            if (!USBDeviceWorker.installedRootTools()) {
+        if (USBDeviceWorker.isFastBootMode())
+        {
+            if (jpii.getNeedDeviceState().trim().equals("all") || jpii.getNeedDeviceState().trim().equals("fastboot")) {
+                needstartup = true;
+            }else
+            {
                 needstartup = false;
             }
-        }
+        } else {
 
-        if ((jpii.getNeedDeviceState() != null && !jpii.getNeedDeviceState().equals("all")) && (jpii.getNeedDeviceState() != null && !jpii.getNeedDeviceState().contains(USBDeviceWorker.getAndroidState()))) {
-            needstartup = false;
-        }
+            if ((jpii.getNeedAndroidVersion() != null && !jpii.getNeedAndroidVersion().contains(USBDeviceInfo.getAndroidSystemVersion())) && (jpii.getNeedAndroidVersion() != null && !jpii.getNeedAndroidVersion().equals("all"))) {
+                needstartup = false;
+            }
 
-        if (new File(jpii.getPluginWorkspace() + "/model.txt").exists()) {
-            if (!JRunScriptFilters.existStrInScript(jpii.getPluginWorkspace() + "/model.txt", USBDeviceInfo.getAndroidProductModelName())) {
+            if (jpii.getNeedRoot() == 1) {
+                if (!USBDeviceWorker.installedRootTools()) {
+                    needstartup = false;
+                }
+            }
+
+            if (new File(jpii.getPluginWorkspace() + "/model.txt").exists()) {
+                if (!JRunScriptFilters.existStrInScript(jpii.getPluginWorkspace() + "/model.txt", USBDeviceInfo.getAndroidProductModelName())) {
+                    needstartup = false;
+                }
+            }
+
+            if ((jpii.getNeedDeviceState() != null && !jpii.getNeedDeviceState().equals("all")) && (jpii.getNeedDeviceState() != null && !jpii.getNeedDeviceState().contains(USBDeviceWorker.getAndroidState()))) {
                 needstartup = false;
             }
         }
@@ -111,22 +122,19 @@ public class JAndroidUsefulToolPanel extends JMiddleContentPanel {
     private void onClickPlugin(JToolListButton button) {
         JPluginInfo jpi = button.getPluginObj();
         try {
-            if (checkPluginProperty(jpi)) {                
+            if (checkPluginProperty(jpi)) {
                 //通过
-                if (jpi.getPluginUIType() != null && jpi.getPluginUIType().equals("no"))
-                {
-                   if (new File(jpi.getPluginWorkspace() + "/run.sh").exists())
-                   {
-                       scriptRun.runScript(jpi.getPluginWorkspace(), "", jpi.getPluginWorkspace() + "/run.sh");
-                       javax.swing.JOptionPane.showMessageDialog(null, "完成！");
-                   }
-                }else
-                {
-                   getMainPanel().showContentPanel(new JPluginRunPanel(jpi,false));
+                if (jpi.getPluginUIType() != null && jpi.getPluginUIType().equals("no")) {
+                    if (new File(jpi.getPluginWorkspace() + "/run.sh").exists()) {
+                        scriptRun.runScript(jpi.getPluginWorkspace(), "", jpi.getPluginWorkspace() + "/run.sh");
+                        javax.swing.JOptionPane.showMessageDialog(null, "插件" + jpi.getPluginName() + "运行完成！");
+                    }
+                } else {
+                    getMainPanel().showContentPanel(new JPluginRunPanel(jpi, false));
                 }
             } else {
                 //不通过
-                getMainPanel().showContentPanel(new JPluginRunPanel(jpi,true));
+                getMainPanel().showContentPanel(new JPluginRunPanel(jpi, true));
             }
         } catch (Exception ex) {
             Logger.getLogger(JAndroidUsefulToolPanel.class.getName()).log(Level.SEVERE, null, ex);
