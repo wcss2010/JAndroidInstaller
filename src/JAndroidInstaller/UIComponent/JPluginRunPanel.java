@@ -92,13 +92,13 @@ public class JPluginRunPanel extends JMiddleContentPanel implements JPluginScrip
         plSelectFileLayout.setHorizontalGroup(
             plSelectFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(plSelectFileLayout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFile, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(3, 3, 3)
+                .addComponent(txtFile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ubtnSelectFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         plSelectFileLayout.setVerticalGroup(
             plSelectFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
