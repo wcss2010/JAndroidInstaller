@@ -260,19 +260,54 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         }
     }
 
-    private void showAPKInfo(File file) {
+    /**
+     * 从启动参数中找文件信息
+     */
+    private void showAPKInfo()
+    {
+        if (currentArgs != null && currentArgs.length > 0)
+        {
+            if (this.sysTabList[3].content != null)
+            {
+                this.setActiveTabPage(1);
+            }
+        }
+    }
+    
+    /*
+     * 使用给定路径打开(暂时无用)
+     */
+    private void showAPKInfo(File ff)
+    {
+        
     }
 
     public void showAllTabs() {
         enabledSwitchDeviceStart = true;
 
+        Boolean showfirst = true;
+        if (JAPKInstallerUI.currentArgs != null && JAPKInstallerUI.currentArgs.length > 0)
+        {
+            showfirst = false;
+        }else
+        {
+            showfirst = true;
+        }
+        
         this.setTabPage(0, "设备状态", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/state.png"), new JAndroidDeviceInfoPanel());
         this.setTabPage(1, "一键安装", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/installer.png"), new JAndroidAPKInstaller());
         //this.setTabPage(2, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());
         this.setTabPage(2, "文件管理", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/manager.png"), new JAndroidFileManager());
         this.setTabPage(3, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
 
-        this.setActiveTabPage(0);
+        if (showfirst)
+        {
+            this.setActiveTabPage(0);
+        }else
+        {
+            this.setActiveTabPage(1);
+        }
+        //this.showAPKInfo();
 //        this.checkAndroidRoot();
     }
 }

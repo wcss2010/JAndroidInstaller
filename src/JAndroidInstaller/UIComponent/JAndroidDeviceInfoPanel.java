@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
  */
 public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runnable {
 
+    Boolean enabledUpdatePhoneImage = true;
     /**
      * Creates new form JAndroidDeviceInfoPanel
      */
@@ -32,8 +33,14 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
 
     @Override
     public void load() {
-        try {
-            new Thread(this).start();
+        try 
+        {
+            if (enabledUpdatePhoneImage)
+            {
+               enabledUpdatePhoneImage = false;
+               new Thread(this).start();
+            }
+            
             this.lblDeviceNe.setText("型号：" + USBDeviceInfo.getAndroidProductModelName());
             this.lblDeviceName.setText("型号：" + USBDeviceInfo.getAndroidProductModelName());
             this.lblRomVersionInfo.setText("固件版本号：" + USBDeviceInfo.getAndroidRomVersionInfo());
@@ -101,7 +108,6 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        image = new WSwingUILib.Component.Base.JImagePanel();
         lblDeviceNe = new javax.swing.JLabel();
         btnUploadImage = new WSwingUILib.Component.JUIButton();
         lblDeviceName = new javax.swing.JLabel();
@@ -115,20 +121,8 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         cbScreenSize = new javax.swing.JComboBox();
         lblRootInfo = new javax.swing.JLabel();
         lblDeviceState = new javax.swing.JLabel();
-
-        image.setBackground(new java.awt.Color(0, 0, 0));
-        image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout imageLayout = new javax.swing.GroupLayout(image);
-        image.setLayout(imageLayout);
-        imageLayout.setHorizontalGroup(
-            imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        imageLayout.setVerticalGroup(
-            imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 355, Short.MAX_VALUE)
-        );
+        jPhoneImagePanel1 = new JAndroidInstaller.UIComponent.JPhoneImagePanel();
+        image = new WSwingUILib.Component.Base.JImagePanel();
 
         lblDeviceNe.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblDeviceNe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -151,39 +145,72 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
             .addGap(0, 32, Short.MAX_VALUE)
         );
 
-        lblDeviceName.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblDeviceName.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblDeviceName.setText("型号");
 
-        lblRomVersionInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblRomVersionInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblRomVersionInfo.setText("固件版本号");
 
-        lblAndroidVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblAndroidVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblAndroidVersion.setText("Android版本");
 
-        lblCpuName.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblCpuName.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblCpuName.setText("芯片");
 
-        lblPlatformName.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblPlatformName.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblPlatformName.setText("主板平台");
 
-        lblRomVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblRomVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblRomVersion.setText("版本号");
 
-        lblKernelVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblKernelVersion.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblKernelVersion.setText("内核版本：");
         lblKernelVersion.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        lblBuildDate.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblBuildDate.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblBuildDate.setText("制作日期");
 
         cbScreenSize.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         cbScreenSize.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "240*400", "320*480", "480*640", "480*800", "768*1024", "800*1280" }));
 
-        lblRootInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
+        lblRootInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
+        lblRootInfo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblRootInfo.setText("jLabel1");
 
-        lblDeviceState.setFont(new java.awt.Font("文泉驿微米黑", 1, 18)); // NOI18N
-        lblDeviceState.setText("jLabel1");
+        lblDeviceState.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
+        lblDeviceState.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblDeviceState.setText("状态");
+
+        image.setBackground(new java.awt.Color(0, 0, 0));
+        image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout imageLayout = new javax.swing.GroupLayout(image);
+        image.setLayout(imageLayout);
+        imageLayout.setHorizontalGroup(
+            imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 175, Short.MAX_VALUE)
+        );
+        imageLayout.setVerticalGroup(
+            imageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 276, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPhoneImagePanel1Layout = new javax.swing.GroupLayout(jPhoneImagePanel1);
+        jPhoneImagePanel1.setLayout(jPhoneImagePanel1Layout);
+        jPhoneImagePanel1Layout.setHorizontalGroup(
+            jPhoneImagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPhoneImagePanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        jPhoneImagePanel1Layout.setVerticalGroup(
+            jPhoneImagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPhoneImagePanel1Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(77, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -192,66 +219,61 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
             .addGroup(layout.createSequentialGroup()
                 .addGap(75, 75, 75)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblDeviceNe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbScreenSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)
+                        .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPhoneImagePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblRomVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDeviceName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAndroidVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCpuName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPlatformName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBuildDate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblKernelVersion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblRootInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDeviceState, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21))
+                    .addComponent(lblRootInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblDeviceState, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblRomVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblCpuName, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblPlatformName, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblBuildDate, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblKernelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRomVersion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCpuName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblPlatformName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblBuildDate, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblKernelVersion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(16, 16, 16))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(40, Short.MAX_VALUE)
-                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPhoneImagePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDeviceNe)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(39, 39, 39))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(lblDeviceState, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRootInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30))))
+                    .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(54, 54, 54)
+                .addComponent(lblDeviceState)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblRomVersion)
+                .addGap(7, 7, 7)
+                .addComponent(lblRomVersionInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblCpuName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPlatformName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblBuildDate, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblKernelVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblRootInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -282,6 +304,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
     private WSwingUILib.Component.JUIButton btnUploadImage;
     private javax.swing.JComboBox cbScreenSize;
     private WSwingUILib.Component.Base.JImagePanel image;
+    private JAndroidInstaller.UIComponent.JPhoneImagePanel jPhoneImagePanel1;
     private javax.swing.JLabel lblAndroidVersion;
     private javax.swing.JLabel lblBuildDate;
     private javax.swing.JLabel lblCpuName;

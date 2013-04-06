@@ -37,6 +37,19 @@ public class JAndroidAPKInstaller extends JMiddleContentPanel {
         this.ubtnClear.setButtonText("清空");
         this.tleApkList.setBackground(Color.white);
         this.tleApkList.getTableHeader().setBackground(Color.white);
+        if (JAPKInstallerUI.currentArgs != null && JAPKInstallerUI.currentArgs.length > 0)
+        {
+            if (new File(JAPKInstallerUI.currentArgs[0]).exists())
+            {
+                try {
+                    APKBaseInfoEntry aie = USBDeviceWorker.readAPKInfo(JAPKInstallerUI.currentArgs[0]);
+                    needInstallFiles.add(aie);
+                    JAPKInstallerUI.currentArgs = null;
+                } catch (Exception ex) {
+                    Logger.getLogger(JAndroidAPKInstaller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
         this.tleApkList.setModel(new JAndroidAPKListModel(needInstallFiles));
     }
 
