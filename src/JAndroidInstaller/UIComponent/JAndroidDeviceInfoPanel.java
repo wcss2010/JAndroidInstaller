@@ -123,6 +123,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         lblDeviceState = new javax.swing.JLabel();
         jPhoneImagePanel1 = new JAndroidInstaller.UIComponent.JPhoneImagePanel();
         image = new WSwingUILib.Component.Base.JImagePanel();
+        btnLook = new WSwingUILib.Component.JUIButton();
 
         lblDeviceNe.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblDeviceNe.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -138,7 +139,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         btnUploadImage.setLayout(btnUploadImageLayout);
         btnUploadImageLayout.setHorizontalGroup(
             btnUploadImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 64, Short.MAX_VALUE)
+            .addGap(0, 52, Short.MAX_VALUE)
         );
         btnUploadImageLayout.setVerticalGroup(
             btnUploadImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,6 +184,11 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
 
         image.setBackground(new java.awt.Color(0, 0, 0));
         image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        image.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imageMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout imageLayout = new javax.swing.GroupLayout(image);
         image.setLayout(imageLayout);
@@ -212,18 +218,38 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
                 .addContainerGap(77, Short.MAX_VALUE))
         );
 
+        btnLook.setButtonText("预览");
+        btnLook.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLookMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout btnLookLayout = new javax.swing.GroupLayout(btnLook);
+        btnLook.setLayout(btnLookLayout);
+        btnLookLayout.setHorizontalGroup(
+            btnLookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 51, Short.MAX_VALUE)
+        );
+        btnLookLayout.setVerticalGroup(
+            btnLookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 33, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(75, 75, 75)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblDeviceNe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDeviceNe, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPhoneImagePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,8 +276,11 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUploadImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(37, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(cbScreenSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnLook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(lblDeviceState)
@@ -300,7 +329,22 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         // TODO add your handling code here:
         uploadAndroidScreen();
     }//GEN-LAST:event_btnUploadImageMouseClicked
+
+    private void imageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2)
+        {
+            this.getMainPanel().showContentPanel(new JAndroidDevicePhotoManager());
+        }
+    }//GEN-LAST:event_imageMouseClicked
+
+    private void btnLookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLookMouseClicked
+        // TODO add your handling code here:
+        this.getMainPanel().showContentPanel(new JAndroidDevicePhotoManager());
+    }//GEN-LAST:event_btnLookMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private WSwingUILib.Component.JUIButton btnLook;
     private WSwingUILib.Component.JUIButton btnUploadImage;
     private javax.swing.JComboBox cbScreenSize;
     private WSwingUILib.Component.Base.JImagePanel image;
