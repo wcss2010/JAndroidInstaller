@@ -353,7 +353,7 @@ public class USBDeviceWorker {
     /*
      * 判断Android下有没有列表内的文件
      */
-    public static Boolean existInDeviceFileSystem(String androiddir, String[] names, Boolean needallexist) throws Exception {
+    public static Boolean existFileInDeviceFileSystem(String androiddir, String[] names, Boolean needallexist) throws Exception {
         int existcount = 0;
         ArrayList<String> data = USBDeviceWorker.shellCmdWithResult("ls " + androiddir);
         for (String line : data) {
@@ -387,9 +387,32 @@ public class USBDeviceWorker {
      * @throws Exception
      */
     public static Boolean installedRootTools() throws Exception {
-        return existInDeviceFileSystem("/system/app/", new String[]{"superuser.apk", "supersu.apk"}, false);
+        return existCmdInDeviceFileSystem("su");
     }
 
+    /**
+     * 检查指令是否存在
+     * @param cmd
+     * @return 
+     */
+    public static Boolean existCmdInDeviceFileSystem(String cmd) throws Exception
+    {
+        ArrayList<String> lines = USBDeviceWorker.shellCmdWithResult("type " + cmd);
+        if (lines != null && lines.size() > 0)
+        {
+            if (lines.get(0).contains("tracked alias"))
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }else
+        {
+            return false;
+        }
+    }
+    
     /**
      * 查询Android状态
      *
