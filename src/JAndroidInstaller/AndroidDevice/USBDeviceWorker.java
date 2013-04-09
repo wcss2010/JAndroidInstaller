@@ -224,6 +224,7 @@ public class USBDeviceWorker {
     public static Boolean shellCmdNoResult(String androidLine) throws Exception {
         if (getFirstActiveDevice() != null) {
             String installCmd = USBDeviceInstaller.androidToolDir + "/adb shell " + androidLine;
+            System.out.println(installCmd);
             JAppToolKit.JRunHelper.runSysCmd(installCmd);
             return true;
         } else {
@@ -242,6 +243,7 @@ public class USBDeviceWorker {
         ArrayList<String> returns = new ArrayList<String>();
         if (getFirstActiveDevice() != null) {
             String installCmd = USBDeviceInstaller.androidToolDir + "/adb shell " + androidLines;
+            System.out.println(installCmd);
             Process pro = JAppToolKit.JRunHelper.runSysCmd(installCmd, false);
             pro.waitFor();
             String[] cntss = JAppToolKit.JDataHelper.readFromInputStream(pro.getInputStream());

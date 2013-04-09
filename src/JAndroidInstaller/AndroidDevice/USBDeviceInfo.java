@@ -133,7 +133,16 @@ public class USBDeviceInfo {
      */
     public static Boolean saveDeviceScreenWithScreenShot(String localFile) throws Exception {
         USBDeviceWorker.shellCmdNoResult("rm /mnt/sdcard/.androiddevicescreen.png");
-        USBDeviceWorker.shellCmdNoResult("screenshot -i /mnt/sdcard/.androiddevicescreen.png");
+        
+        if (USBDeviceWorker.installedRootTools())
+        {
+            System.out.println("因为已经root,所以使用su来执行截屏命令！");
+            USBDeviceWorker.shellCmdNoResult("su -c screenshot -i /mnt/sdcard/.androiddevicescreen.png"); 
+        }else
+        {
+            System.out.println("因为没有root,所以直接执行截屏命令！");
+            USBDeviceWorker.shellCmdNoResult("screenshot -i /mnt/sdcard/.androiddevicescreen.png");
+        }
 
         USBDeviceWorker.copyFromSdcard("/mnt/sdcard/.androiddevicescreen.png", localFile);
         if (new File(localFile).exists()) {
