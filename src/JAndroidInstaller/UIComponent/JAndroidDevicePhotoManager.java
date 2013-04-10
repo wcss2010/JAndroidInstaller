@@ -144,7 +144,7 @@ public class JAndroidDevicePhotoManager extends JMiddleContentPanel implements R
         );
 
         cbScreens.setFont(new java.awt.Font("文泉驿微米黑", 1, 12)); // NOI18N
-        cbScreens.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "240*400", "320*480", "480*640", "480*800", "768*1024", "800*1280" }));
+        cbScreens.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "240*400", "320*480", "480*640", "480*800", "540*960", "768*1024", "800*1280" }));
         cbScreens.setEnabled(false);
         cbScreens.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -223,7 +223,7 @@ public class JAndroidDevicePhotoManager extends JMiddleContentPanel implements R
                 .addComponent(btnSaveScreen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbxSelectScreen)
-                .addGap(13, 13, 13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbScreens, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtScreenCnt, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
