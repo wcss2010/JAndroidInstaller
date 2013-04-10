@@ -402,12 +402,18 @@ public class USBDeviceWorker {
         ArrayList<String> lines = USBDeviceWorker.shellCmdWithResult("type " + cmd);
         if (lines != null && lines.size() > 0)
         {
-            if (lines.get(0).contains("tracked alias"))
+            String contents = "";
+            for(String s: lines)
             {
-                return true;
-            }else
+                contents += s;
+            }
+            
+            if (contents.contains("not found"))
             {
                 return false;
+            }else
+            {
+                return true;
             }
         }else
         {
