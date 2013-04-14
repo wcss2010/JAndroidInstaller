@@ -162,11 +162,11 @@ public class USBDeviceWorker {
      * @throws Exception
      */
     public static Boolean copyToSdcard(String source, String dest) throws Exception {
-        source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
-        dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
         File ff = new File(source);
         if (ff.exists() && ff.isFile()) {
             if (getFirstActiveDevice() != null) {
+                source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
+                dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
                 String installCmd = USBDeviceInstaller.androidToolDir + "/adb push " + source + " " + dest;
 
                 Process pro = JAppToolKit.JRunHelper.runSysCmd(installCmd, false);
@@ -197,9 +197,9 @@ public class USBDeviceWorker {
      * @throws Exception
      */
     public static Boolean copyFromSdcard(String source, String dest) throws Exception {
-        source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
-        dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
         if (getFirstActiveDevice() != null) {
+            source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
+            dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
             String installCmd = USBDeviceInstaller.androidToolDir + "/adb pull " + source + " " + dest;
 
             Process pro = JAppToolKit.JRunHelper.runSysCmd(installCmd, false);
