@@ -6,6 +6,8 @@ package JAndroidInstaller.AndroidDevice;
 
 import JAndroidInstaller.PluginManager.JRunScriptFilters;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -154,6 +156,21 @@ public class USBDeviceWorker {
     }
 
     /**
+     * 判断文件是否存在 创建日期：(2002-1-24 9:19:48)
+     *
+     * @return boolean
+     * @param fileName java.lang.String
+     */
+    public static boolean fileExists(String fileName) {
+        try {
+            FileReader f = new FileReader(new File(fileName));
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+    }
+
+    /**
      * 复制文件到sdcard中
      *
      * @param source
@@ -163,13 +180,18 @@ public class USBDeviceWorker {
      */
     public static Boolean copyToSdcard(String source, String dest) throws Exception {
         File ff = new File(source);
-        if (ff.exists() && ff.isFile()) {
+        if (fileExists(source)) {
             if (getFirstActiveDevice() != null) {
                 source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
                 dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
                 String installCmd = USBDeviceInstaller.androidToolDir + "/adb push " + source + " " + dest;
-
-                Process pro = JAppToolKit.JRunHelper.runSysCmd(installCmd, false);
+                
+                ArrayList<String> copytosd = new ArrayList<String>();
+                copytosd.add(installCmd);
+                JAppToolKit.JRunHelper.runSysCmd("rm -rf " + JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copytosdcard.sh");
+                JAppToolKit.JDataHelper.writeAllLines(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copytosdcard.sh", copytosd);
+                JAppToolKit.JRunHelper.runSysCmd("chmod +x " + JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copytosdcard.sh");
+                Process pro = JAppToolKit.JRunHelper.runSysCmd(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copytosdcard.sh", false);
                 pro.waitFor();
                 String[] cntss = JAppToolKit.JDataHelper.readFromInputStream(pro.getInputStream());
                 Boolean installOk = false;
@@ -197,12 +219,16 @@ public class USBDeviceWorker {
      * @throws Exception
      */
     public static Boolean copyFromSdcard(String source, String dest) throws Exception {
+        source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
+        dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
         if (getFirstActiveDevice() != null) {
-            source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
-            dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
             String installCmd = USBDeviceInstaller.androidToolDir + "/adb pull " + source + " " + dest;
-
-            Process pro = JAppToolKit.JRunHelper.runSysCmd(installCmd, false);
+            ArrayList<String> copyfrom = new ArrayList<String>();
+            copyfrom.add(installCmd);
+            JAppToolKit.JRunHelper.runSysCmd("rm -rf " + JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copyfromsdcard.sh");
+            JAppToolKit.JDataHelper.writeAllLines(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copyfromsdcard.sh", copyfrom);
+            JAppToolKit.JRunHelper.runSysCmd("chmod +x " + JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copyfromsdcard.sh");
+            Process pro = JAppToolKit.JRunHelper.runSysCmd(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/copyfromsdcard.sh", false);
             pro.waitFor();
             String[] cntss = JAppToolKit.JDataHelper.readFromInputStream(pro.getInputStream());
             Boolean installOk = false;
