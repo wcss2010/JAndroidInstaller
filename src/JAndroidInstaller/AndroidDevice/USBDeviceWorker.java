@@ -4,6 +4,7 @@
  */
 package JAndroidInstaller.AndroidDevice;
 
+import JAndroidInstaller.PluginManager.JRunScriptFilters;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -161,6 +162,8 @@ public class USBDeviceWorker {
      * @throws Exception
      */
     public static Boolean copyToSdcard(String source, String dest) throws Exception {
+        source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
+        dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
         File ff = new File(source);
         if (ff.exists() && ff.isFile()) {
             if (getFirstActiveDevice() != null) {
@@ -194,6 +197,8 @@ public class USBDeviceWorker {
      * @throws Exception
      */
     public static Boolean copyFromSdcard(String source, String dest) throws Exception {
+        source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
+        dest = JRunScriptFilters.replaceStr(dest, " ", "\\ ");
         if (getFirstActiveDevice() != null) {
             String installCmd = USBDeviceInstaller.androidToolDir + "/adb pull " + source + " " + dest;
 
@@ -287,6 +292,7 @@ public class USBDeviceWorker {
      * @throws Exception
      */
     public static Boolean deleteFileAndDir(String source) throws Exception {
+        source = JRunScriptFilters.replaceStr(source, " ", "\\ ");
         if (CheckFileType(source)) {
             //删除文件
             return shellCmdNoResult("rm " + source);
@@ -394,33 +400,28 @@ public class USBDeviceWorker {
 
     /**
      * 检查指令是否存在
+     *
      * @param cmd
-     * @return 
+     * @return
      */
-    public static Boolean existCmdInDeviceFileSystem(String cmd) throws Exception
-    {
+    public static Boolean existCmdInDeviceFileSystem(String cmd) throws Exception {
         ArrayList<String> lines = USBDeviceWorker.shellCmdWithResult("type " + cmd);
-        if (lines != null && lines.size() > 0)
-        {
+        if (lines != null && lines.size() > 0) {
             String contents = "";
-            for(String s: lines)
-            {
+            for (String s : lines) {
                 contents += s;
             }
-            
-            if (contents.contains("not found"))
-            {
+
+            if (contents.contains("not found")) {
                 return false;
-            }else
-            {
+            } else {
                 return true;
             }
-        }else
-        {
+        } else {
             return false;
         }
     }
-    
+
     /**
      * 查询Android状态
      *
