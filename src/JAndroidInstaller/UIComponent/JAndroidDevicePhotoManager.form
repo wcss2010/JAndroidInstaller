@@ -118,15 +118,21 @@
           <Font name="&#x6587;&#x6cc9;&#x9a7f;&#x5fae;&#x7c73;&#x9ed1;" size="12" style="1"/>
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="8">
+          <StringArray count="14">
             <StringItem index="0" value="240*320"/>
-            <StringItem index="1" value="240*400"/>
-            <StringItem index="2" value="320*480"/>
-            <StringItem index="3" value="480*640"/>
-            <StringItem index="4" value="480*800"/>
+            <StringItem index="1" value="320*480"/>
+            <StringItem index="2" value="460*640"/>
+            <StringItem index="3" value="480*800"/>
+            <StringItem index="4" value="480*854"/>
             <StringItem index="5" value="540*960"/>
-            <StringItem index="6" value="768*1024"/>
-            <StringItem index="7" value="800*1280"/>
+            <StringItem index="6" value="640*960"/>
+            <StringItem index="7" value="800*480"/>
+            <StringItem index="8" value="854*480"/>
+            <StringItem index="9" value="960*540"/>
+            <StringItem index="10" value="960*640"/>
+            <StringItem index="11" value="1024*768"/>
+            <StringItem index="12" value="1280*720"/>
+            <StringItem index="13" value="1280*800"/>
           </StringArray>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>

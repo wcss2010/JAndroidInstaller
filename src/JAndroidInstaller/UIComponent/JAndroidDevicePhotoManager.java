@@ -47,7 +47,7 @@ public class JAndroidDevicePhotoManager extends JMiddleContentPanel implements R
             // TODO add your handling code here:
 
             this.image.setImageIcon(null, false);
-            this.image.nowPaint();
+            this.image.repaint();
 
             File dest = new File(JAppToolKit.JRunHelper.getCmdRunScriptBufferDir() + "/androidscreen.png");
             if (dest.exists()) {
@@ -63,7 +63,7 @@ public class JAndroidDevicePhotoManager extends JMiddleContentPanel implements R
             }
 
             this.image.setImageIcon(new ImageIcon(ImageIO.read(new FileInputStream(dest.getAbsolutePath()))), false);
-            this.image.nowPaint();
+            this.image.repaint();
         } catch (Exception ex) {
             Logger.getLogger(JAndroidDevicePhotoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -144,7 +144,7 @@ public class JAndroidDevicePhotoManager extends JMiddleContentPanel implements R
         );
 
         cbScreens.setFont(new java.awt.Font("文泉驿微米黑", 1, 12)); // NOI18N
-        cbScreens.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "240*400", "320*480", "480*640", "480*800", "540*960", "768*1024", "800*1280" }));
+        cbScreens.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "320*480", "460*640", "480*800", "480*854", "540*960", "640*960", "800*480", "854*480", "960*540", "960*640", "1024*768", "1280*720", "1280*800" }));
         cbScreens.setEnabled(false);
         cbScreens.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {

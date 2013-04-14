@@ -62,7 +62,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         }
         
         try {
-            this.lblBuildDate.setText("制作日期：" + new Date(USBDeviceInfo.getAndroidSystemInfo("ro.build.date=")).toLocaleString());
+            this.lblBuildDate.setText("制作日期：" + USBDeviceInfo.getAndroidSystemInfo("ro.build.date="));
         } catch (Exception ex) {
             Logger.getLogger(JAndroidDeviceInfoPanel.class.getName()).log(Level.SEVERE, null, ex);
             this.lblBuildDate.setText("制作日期：unknow");
@@ -182,7 +182,7 @@ public class JAndroidDeviceInfoPanel extends JMiddleContentPanel implements Runn
         lblBuildDate.setText("制作日期");
 
         cbScreenSize.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
-        cbScreenSize.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "240*400", "320*480", "480*640", "480*800", "768*1024", "800*1280" }));
+        cbScreenSize.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "240*320", "320*480", "460*640", "480*800", "480*854", "540*960", "640*960", "800*480", "854*480", "960*540", "960*640", "1024*768", "1280*720", "1280*800" }));
 
         lblRootInfo.setFont(new java.awt.Font("文泉驿微米黑", 1, 14)); // NOI18N
         lblRootInfo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
