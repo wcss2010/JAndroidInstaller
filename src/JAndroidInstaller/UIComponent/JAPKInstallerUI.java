@@ -4,6 +4,7 @@
  */
 package JAndroidInstaller.UIComponent;
 
+import JAndroidInstaller.AndroidDevice.AppConfig;
 import JAndroidInstaller.AndroidDevice.USBDeviceChecker;
 import JAndroidInstaller.AndroidDevice.USBDeviceInstaller;
 import JAndroidInstaller.AndroidDevice.USBDeviceWorker;
@@ -27,15 +28,39 @@ import javax.swing.*;
 public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
 
     public static Boolean enabledSwitchDeviceStart = true;
+    private static String etcConfigUrl = "/etc/apkinstallerconfig.xml";
+    public static AppConfig config = null;
+
+    /**
+     * 载入配置
+     */
+    private static void loadConfigs() throws Exception {
+        if (new File(JAPKInstallerUI.etcConfigUrl).exists())
+        {
+            //载入配置
+            JAPKInstallerUI.config = AppConfig.loadConfig(JAPKInstallerUI.etcConfigUrl);
+        }else
+        {
+            JAPKInstallerUI.config = new AppConfig();
+            JAPKInstallerUI.config.setSoftCNName("Android简易工具箱");
+            JAPKInstallerUI.config.setSoftEngName("Android Simple ToolBox");
+            JAPKInstallerUI.config.setSoftVersion("V1.5.2");
+            JAPKInstallerUI.config.setSoftRomListUrl("");
+            JAPKInstallerUI.config.setSoftFTPUrl("");
+            JAPKInstallerUI.config.setSoftFTPUser("");
+            JAPKInstallerUI.config.setSoftFTPPass("");
+            //AppConfig.saveConfig(JAPKInstallerUI.config,JAppToolKit.JRunHelper.getUserHomeDirPath() + "/apkconfig.xml");
+        }
+    }
 
     /**
      * 正常启动
      */
     public JAPKInstallerUI() {
-        this.setSoftName("Android简易工具箱");
-        this.setSoftInfo("Android Simple ToolBox");
+        this.setSoftName(JAPKInstallerUI.config.getSoftCNName());
+        this.setSoftInfo(JAPKInstallerUI.config.getSoftEngName());
         this.setStatusText("设备状态：已连接！");
-        this.setVersionText("版本：V1.5.1");
+        this.setVersionText("版本：" + JAPKInstallerUI.config.getSoftVersion());
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
         showAllTabs();
 
@@ -51,10 +76,10 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
      * @param taskNum
      */
     public JAPKInstallerUI(int taskNum) {
-        this.setSoftName("Android简易工具箱");
-        this.setSoftInfo("Android Simple ToolBox");
+        this.setSoftName(JAPKInstallerUI.config.getSoftCNName());
+        this.setSoftInfo(JAPKInstallerUI.config.getSoftEngName());
         this.setStatusText("设备状态：未连接！");
-        this.setVersionText("版本：V1.5.1");
+        this.setVersionText("版本：" + JAPKInstallerUI.config.getSoftVersion());
         this.setAppIcoFromImageObj(JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/android-robot.png"));
         if (taskNum == 0) {
             switchToDriverState(this);
@@ -157,7 +182,8 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[])
+    {
         try {
             /* Set the Nimbus look and feel */
             //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -185,6 +211,7 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
             //</editor-fold>
 
             System.out.println("当前Android工作目录：" + USBDeviceInstaller.androidToolDir);
+            loadConfigs();
             currentArgs = args;
             String deviceStr = USBDeviceWorker.getFirstActiveDevice();
             System.out.println("检测到的设备类型：" + deviceStr);
