@@ -25,7 +25,7 @@ public class JAndroidDeviceRestartPanel extends JMiddleContentPanel {
         initComponents();
         parents = par;
         this.btnCheck.setButtonText("我已经准备好了，立即进入主界面！");
-        this.plreadme.setReadmeInfo("<html>欢迎使用Android简易工具箱！<br>1. 请用USB线将您的Android设备连接到电脑！ 2.请打开\"USB调试\"功能，如果已经打开，请关闭后重新打开！</html>");
+        this.plreadme.setReadmeInfo("<html>欢迎使用" + JAPKInstallerUI.config.getSoftCNName() + "！<br>1. 请用USB线将您的Android设备连接到电脑！ 2.请打开\"USB调试\"功能，如果已经打开，请关闭后重新打开！</html>");
     }
 
     /**
