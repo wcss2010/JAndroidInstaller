@@ -32,6 +32,7 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
     private String currentDownloadTaskID = "";
     private Queue<String> romDownloadQueue = new LinkedList<String>();
     private String lastUploadSort = "";
+    private String romListState = "";
 
     /**
      * Creates new form JAndroidRomList
@@ -63,6 +64,7 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
      * 刷新ROM列表
      */
     private void uploadRomLists() {
+        romListState = "working";
         this.btnUploadList.setEnabled(false);
         this.listSortList.setListData(new Object[]{});
         this.plRomList.removeAll();
@@ -378,7 +380,13 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
 
     private void btnUploadListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUploadListMouseClicked
         // TODO add your handling code here:
-        uploadRomLists();
+        if (romListState != null && romListState.contains("work"))
+        {
+           this.plReadme.setReadmeInfo("固件列表数据正在下载中，请稍后再试......");   
+        }else
+        {
+           uploadRomLists();
+        }
     }//GEN-LAST:event_btnUploadListMouseClicked
 
     private void btnStopDownloadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnStopDownloadMouseClicked
@@ -414,6 +422,7 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
 
     @Override
     public void endUploadRomList(AVideoDownloader avd) {
+        romListState = "";
         this.btnUploadList.setEnabled(true);
         this.listSortList.setListData(new Object[]{});
         this.plRomList.removeAll();
@@ -424,6 +433,7 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
 
     @Override
     public void downloadError(AVideoDownloader avd, String error, String error1) {
+        romListState = "";
         currentDownloadUrl = "";
         this.btnUploadList.setEnabled(true);
         this.btnStopDownload.setVisible(false);
