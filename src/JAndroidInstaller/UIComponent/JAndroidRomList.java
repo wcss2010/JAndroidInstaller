@@ -13,6 +13,7 @@ import JAndroidInstaller.ROMLists.JRomRecordManager;
 import Manager.DownloaderManager;
 import WSwingUILib.Component.JMiddleContentPanel;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -187,8 +188,13 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
      *
      * @param info
      */
-    public void printInfo(String info) {
-        this.plReadme.setReadmeInfo(info);
+    public void printInfo(String info)
+    {
+        if (info.contains("[br]"))
+        {
+            info.replace("[br]", "<br>");
+        }
+        this.plReadme.setReadmeInfo("<html>" + info + "</html>");
     }
 
     /**
@@ -449,12 +455,14 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
     }
 
     @Override
-    public void romDownloadFinish(AVideoDownloader avd) {
+    public void romDownloadFinish(AVideoDownloader avd)
+    {
+        this.copyRomFileTo(avd);        
         if (this.romDownloadQueue.size() <= 0) {
             currentDownloadUrl = "";
             this.btnUploadList.setEnabled(true);
             this.btnStopDownload.setVisible(false);
-            this.plReadme.setReadmeInfo("下载固件数据完成!");
+            this.plReadme.setReadmeInfo("下载固件数据完成!请到用户目录下的RomDownload目录查看！");
         } else {
             currentDownloadUrl = this.romDownloadQueue.element();
             this.btnStopDownload.setVisible(true);
@@ -463,6 +471,21 @@ public class JAndroidRomList extends JMiddleContentPanel implements IRomUploadEv
             } catch (Exception ex) {
                 Logger.getLogger(JAndroidRomList.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    /**
+     * 将下载完成的固件复制到
+     * @param avd 
+     */
+    private void copyRomFileTo(AVideoDownloader avd) {
+        try {
+            File ff = new File(JAppToolKit.JRunHelper.getUserHomeDirPath() + "/RomDownload/");
+            ff.mkdirs();
+            String[] teams = avd.videoUrl.split("\\/");
+            JAppToolKit.JRunHelper.runSysCmd("ln " + avd.getVideoBufferUrl() + " " + ff.getAbsolutePath() + "/" + teams[teams.length-1]);
+        } catch (Exception ex) {
+            Logger.getLogger(JAndroidRomList.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
