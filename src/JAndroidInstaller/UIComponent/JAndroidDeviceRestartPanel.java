@@ -73,11 +73,11 @@ public class JAndroidDeviceRestartPanel extends JMiddleContentPanel {
         );
         btnCheckLayout.setVerticalGroup(
             btnCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGap(0, 30, Short.MAX_VALUE)
         );
 
         add(btnCheck);
-        btnCheck.setBounds(630, 20, 230, 50);
+        btnCheck.setBounds(630, 20, 230, 30);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCheckMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCheckMouseClicked
