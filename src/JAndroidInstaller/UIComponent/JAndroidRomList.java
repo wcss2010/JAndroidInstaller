@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sun.jkernel.DownloadManager;
 
 /**
  * ROM列表面板
