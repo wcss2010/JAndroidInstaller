@@ -17,6 +17,7 @@ public class AppConfig
     private String softEngName;
     private String softVersion;
     private String softRomListUrl;
+    private String softRomSortListUrl;
     private String softFTPUrl;
     private String softFTPUser;
     private String SoftFTPPass;
@@ -139,5 +140,19 @@ public class AppConfig
      */
     public void setSoftFTPPass(String SoftFTPPass) {
         this.SoftFTPPass = SoftFTPPass;
+    }
+
+    /**
+     * @return the softRomSortListUrl
+     */
+    public String getSoftRomSortListUrl() {
+        return softRomSortListUrl;
+    }
+
+    /**
+     * @param softRomSortListUrl the softRomSortListUrl to set
+     */
+    public void setSoftRomSortListUrl(String softRomSortListUrl) {
+        this.softRomSortListUrl = softRomSortListUrl;
     }
 }
