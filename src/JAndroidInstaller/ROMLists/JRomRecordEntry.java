@@ -25,6 +25,7 @@ public class JRomRecordEntry
     private String romInfo;
     private String romIcon;
     private String romSort;
+    private String romSize;
     private String state;
     
     /**
@@ -189,6 +190,7 @@ public class JRomRecordEntry
         rre.setState("");
         rre.setRomInfo("");
         rre.setRomIcon("");
+        rre.setRomSize("2048K");
         try {
             JRomRecordEntry.saveConfig(rre,"/home/wcss/test.xml");
         } catch (Exception ex) {
@@ -222,5 +224,19 @@ public class JRomRecordEntry
      */
     public void setRomIcon(String romIcon) {
         this.romIcon = romIcon;
+    }
+
+    /**
+     * @return the romSize
+     */
+    public String getRomSize() {
+        return romSize;
+    }
+
+    /**
+     * @param romSize the romSize to set
+     */
+    public void setRomSize(String romSize) {
+        this.romSize = romSize;
     }
 }

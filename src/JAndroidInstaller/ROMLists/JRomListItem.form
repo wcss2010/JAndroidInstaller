@@ -152,6 +152,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="jLabel1"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblNameMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblDate">
       <Properties>

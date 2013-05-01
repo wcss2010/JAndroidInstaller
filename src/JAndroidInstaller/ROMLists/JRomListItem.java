@@ -4,6 +4,7 @@
  */
 package JAndroidInstaller.ROMLists;
 
+import JAndroidInstaller.UIComponent.JAndroidRomInfo;
 import JAndroidInstaller.UIComponent.JAndroidRomList;
 import WSwingUILib.Component.Base.JImagePanel;
 import java.io.File;
@@ -142,6 +143,11 @@ public class JRomListItem extends JImagePanel {
         lblName.setFont(new java.awt.Font("文泉驿微米黑", 1, 16)); // NOI18N
         lblName.setForeground(new java.awt.Color(0, 102, 255));
         lblName.setText("jLabel1");
+        lblName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblNameMouseClicked(evt);
+            }
+        });
 
         lblDate.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
         lblDate.setText("jLabel2");
@@ -234,6 +240,15 @@ public class JRomListItem extends JImagePanel {
             }
         }
     }//GEN-LAST:event_btnDownloadMouseClicked
+
+    private void lblNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblNameMouseClicked
+        // TODO add your handling code here:
+        if (!this.getLocalRecord().getRomName().contains("正在刷新"))
+        {
+           this.parents.getMainPanel().showContentPanel(new JAndroidRomInfo(this.getLocalRecord()));
+        }
+    }//GEN-LAST:event_lblNameMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private WSwingUILib.Component.JUIButton btnDownload;
     private javax.swing.JPanel jPanel1;
