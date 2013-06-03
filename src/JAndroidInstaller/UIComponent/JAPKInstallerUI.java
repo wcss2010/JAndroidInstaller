@@ -331,6 +331,7 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         this.setTabPage(2, "文件管理", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/manager.png"), new JAndroidFileManager());
         this.setTabPage(3, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
         //this.setTabPage(4, "固件列表", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/rom.png"), new JAndroidRomList());
+        this.setTabPage(4, "应用列表", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/appmanage.png"), new JAndroidAppManage());
         
         if (showfirst)
         {
