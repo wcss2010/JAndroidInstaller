@@ -301,7 +301,8 @@ public class JAndroidDeviceCheckPanel extends JMiddleContentPanel {
                 if (USBDeviceWorker.isAndroidDeviceOnline())
                 {
                     parents.setStatusText("设备状态：已连接！");
-                    JAPKInstallerUI.startMainUI(JAPKInstallerUI.currentArgs);
+                    this.getMainPanel().setVisible(false);
+                    JAPKInstallerUI.startMainUI(JAPKInstallerUI.currentArgs);                    
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(null, "检测失败！请关闭程序后重新开始！");
                     System.exit(0);

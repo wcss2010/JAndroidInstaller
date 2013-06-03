@@ -310,6 +310,9 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         
     }
 
+    /**
+     * 显示所有标签页
+     */
     public void showAllTabs() {
         enabledSwitchDeviceStart = true;
 
@@ -327,7 +330,7 @@ public class JAPKInstallerUI extends JTemplateFrame implements Runnable {
         //this.setTabPage(2, "一键刷机", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/fastboot.png"), new JMiddleContentPanel());
         this.setTabPage(2, "文件管理", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/manager.png"), new JAndroidFileManager());
         this.setTabPage(3, "常用工具", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/tool.png"), new JAndroidUsefulToolPanel());
-        this.setTabPage(4, "固件列表", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/rom.png"), new JAndroidRomList());
+        //this.setTabPage(4, "固件列表", JImagePanel.getImageIconObjFromResource("/JAndroidInstaller/UIImage/rom.png"), new JAndroidRomList());
         
         if (showfirst)
         {
