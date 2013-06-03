@@ -26,7 +26,6 @@ public class JAndroidAppManage extends JMiddleContentPanel {
         this.plReadme.setReadmeInfo("应用列表");
         this.tleAppList.setBackground(Color.white);
         this.tleAppList.getTableHeader().setBackground(Color.white);
-        this.btnSystemList.setVisible(false);
     }
 
     /**
@@ -145,9 +144,9 @@ public class JAndroidAppManage extends JMiddleContentPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInstalledList, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUnInstall, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSystemList, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUnInstall, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 810, Short.MAX_VALUE))
                 .addContainerGap())
